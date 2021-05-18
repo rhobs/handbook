@@ -11,8 +11,7 @@ web-pre: $(MDOX)
 
 $(WEBSITE_DIR)/node_modules:
 	@git submodule update --init --recursive
-	cd $(WEBSITE_DIR)/themes/docsy/ && npm install
-	rm -rf $(WEBSITE_DIR)/themes/docsy/content
+	cd $(WEBSITE_DIR)/themes/docsy/ && npm install --prefix . && rm -rf content
 
 .PHONY: web
 web: $(WEBSITE_DIR)/node_modules $(HUGO) web-pre
