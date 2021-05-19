@@ -1,0 +1,16 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "description": "I don't know what I do, glad Prem Saraswat is there to help me out",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "me",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.15",
+    "postcss-cli": "^8.3.1"
+  }
+}
