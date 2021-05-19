@@ -10,7 +10,7 @@ gitIgnored: true
 localLinksStyle: hugo
 
 transformations:
-  - glob: "/../README.md"
+  - glob: "../README.md"
     path: /_index.md
     frontMatter:
       template: |
@@ -25,7 +25,7 @@ transformations:
           _target:
             path: "/**"
 
-  - glob: "/Proposals/README.md"
+  - glob: "Proposals/README.md"
     path: _index.md
     frontMatter:
       template: |
