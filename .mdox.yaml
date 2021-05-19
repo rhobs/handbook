@@ -1,0 +1,46 @@
+version: 1
+
+inputDir: "content"
+outputDir: "web/content/en"
+outputStaticDir: "web/static"
+
+gitIgnored: true
+localLinksStyle: hugo
+
+transformations:
+  - glob: "/README.md"
+    path: _index.md
+    frontMatter:
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+        menu:
+          main:
+            weight: 1
+            pre: <i class='fas fa-book'></i>
+        cascade:
+        - type: "docs"
+          _target:
+            path: "/**"
+
+  - glob: "/Proposals/README.md"
+    path: _index.md
+    frontMatter:
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+        menu:
+          main:
+            weight: 2
+            pre: <i class='fas fa-users'></i>
+
+  - glob: "**/README.md"
+    path: _index.md
+    frontMatter: &defaultFrontMatter
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+
+  - glob: "**/*.md"
+    frontMatter:
+      <<: *defaultFrontMatter
