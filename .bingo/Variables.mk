@@ -29,9 +29,9 @@ $(HUGO): $(BINGO_DIR)/hugo.mod
 	@echo "(re)installing $(GOBIN)/hugo-v0.80.0"
 	@cd $(BINGO_DIR) && CGO_ENABLED=1 $(GO) build -tags=extended -mod=mod -modfile=hugo.mod -o=$(GOBIN)/hugo-v0.80.0 "github.com/gohugoio/hugo"
 
-MDOX := $(GOBIN)/mdox-v0.2.2-0.20210519115757-e4066b413702
+MDOX := $(GOBIN)/mdox-v0.2.2-0.20210519193355-0e0f91ae1ad9
 $(MDOX): $(BINGO_DIR)/mdox.mod
 	@# Install binary/ries using Go 1.14+ build command. This is using bwplotka/bingo-controlled, separate go module with pinned dependencies.
-	@echo "(re)installing $(GOBIN)/mdox-v0.2.2-0.20210519115757-e4066b413702"
-	@cd $(BINGO_DIR) && $(GO) build -mod=mod -modfile=mdox.mod -o=$(GOBIN)/mdox-v0.2.2-0.20210519115757-e4066b413702 "github.com/bwplotka/mdox"
+	@echo "(re)installing $(GOBIN)/mdox-v0.2.2-0.20210519193355-0e0f91ae1ad9"
+	@cd $(BINGO_DIR) && $(GO) build -mod=mod -modfile=mdox.mod -o=$(GOBIN)/mdox-v0.2.2-0.20210519193355-0e0f91ae1ad9 "github.com/bwplotka/mdox"
 
