@@ -1,7 +1,5 @@
 # Proposals Process
 
-Process Design: [Being proposed](Accepted/202105-proposals-process.md)
-
 # Google Docs Template
 
 [Open Source Design Doc Template](https://docs.google.com/document/d/1zeElxolajNyGUB8J6aDXwxngHynh4iOuEzy3ylLc72U/edit#).
@@ -11,53 +9,53 @@ Process Design: [Being proposed](Accepted/202105-proposals-process.md)
 ## Your Proposal Title
 
 * **Owners:**
-    * `<@author: single champion for the moment of writing>`
+  * `<@author: single champion for the moment of writing>`
 
 * **Related Tickets:**
-    * `<JIRA, GH Issues>`
+  * `<JIRA, GH Issues>`
 
 * **Other docs:**
-    * `<Links…>`
+  * `<Links…>`
 
 ## TL;DR
 
 Give here a short summary of what this document is proposing and what components it is touching.
 
-_For example: This design doc is proposing a consistent design template for “example.com” organization._
+*For example: This design doc is proposing a consistent design template for “example.com” organization.*
 
 ## Why
 
 Put here a motivation behind the change proposed by this design document, give context.
 
-_For example: It’s important to clearly explain the reasons behind certain design decisions in order to have a consensus between team members, as well as external stakeholders. Such a design document can also be used as a reference and knowledge-sharing purposes. That’s why we are proposing a consistent style of the design document that will be used for future designs._
+*For example: It’s important to clearly explain the reasons behind certain design decisions in order to have a consensus between team members, as well as external stakeholders. Such a design document can also be used as a reference and knowledge-sharing purposes. That’s why we are proposing a consistent style of the design document that will be used for future designs.*
 
 ### Pitfalls of the current solution
 
 What specific problems are we hitting with the current solution? Why it’s not enough?
 
-_For example, We were missing a consistent design doc template, so each team/person was creating their own. Because of inconsistencies, those documents were harder to understand, and it was easy to miss important sections. This was causing certain engineering time to be wasted._
+*For example, We were missing a consistent design doc template, so each team/person was creating their own. Because of inconsistencies, those documents were harder to understand, and it was easy to miss important sections. This was causing certain engineering time to be wasted.*
 
 ## Goals
 
 Goals and use cases for the solution as proposed in [How](#how):
 
-*   Allow easy collaboration and decision making on design ideas.
-*   Have a consistent design style that is readable and understandable.
-*   Have a design style that is concise and covers all the essential information.
+* Allow easy collaboration and decision making on design ideas.
+* Have a consistent design style that is readable and understandable.
+* Have a design style that is concise and covers all the essential information.
 
 ## Non-Goals
 
-*   Move old designs to the new format.
-*   Not doing X,Y,Z.
+* Move old designs to the new format.
+* Not doing X,Y,Z.
 
 ## How
 
 Explain the full overview of the proposed solution. Some guidelines:
 
-*   Make it concise and **simple**; put diagrams; be concrete, avoid using “really”, “amazing” and “great” (:
-*   How you will test and verify?
-*   How you will migrate users, without downtime. How we solve incompatibilities?
-*   What open questions are left? (“Known unknowns”)
+* Make it concise and **simple**; put diagrams; be concrete, avoid using “really”, “amazing” and “great” (:
+* How you will test and verify?
+* How you will migrate users, without downtime. How we solve incompatibilities?
+* What open questions are left? (“Known unknowns”)
 
 ## Alternatives
 

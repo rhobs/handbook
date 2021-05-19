@@ -3,13 +3,15 @@ version: 1
 inputDir: "content"
 outputDir: "web/content/en"
 outputStaticDir: "web/static"
+extraInputGlobs:
+  - "README.md"
 
 gitIgnored: true
 localLinksStyle: hugo
 
 transformations:
-  - glob: "/README.md"
-    path: _index.md
+  - glob: "/../README.md"
+    path: /_index.md
     frontMatter:
       template: |
         title: "{{ .Origin.FirstHeader }}"

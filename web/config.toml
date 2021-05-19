@@ -53,8 +53,8 @@ section = ["HTML", "print"]
 copyright = "The Red Hat Observability Group Authors"
 
 # Repository configuration (URLs for in-page links to opening issues and suggesting changes)
-# TODO(bwplotka): Changes are suggested to wrong, auto-generated directory, disable for now? Fix it!
-github_repo = "https://github.com/rhobs/handbook"
+# TODO(bwplotka): Changes are suggested to wrong, auto-generated directory, disabled for now. Fix it!
+#github_repo = "https://github.com/rhobs/handbook"
 github_branch= "main"
 # Enable Algolia DocSearch
 algolia_docsearch = true
