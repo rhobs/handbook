@@ -5,6 +5,7 @@ outputDir: "web/content/en"
 outputStaticDir: "web/static"
 extraInputGlobs:
   - "README.md"
+  - "web/assets/favicons"
 
 gitIgnored: true
 localLinksStyle: hugo
