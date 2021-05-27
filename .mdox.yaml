@@ -2,13 +2,14 @@ version: 1
 
 inputDir: "content"
 outputDir: "web/content/en"
-outputStaticDir: "web/static"
 extraInputGlobs:
   - "README.md"
   - "web/assets/favicons"
 
 gitIgnored: true
-localLinksStyle: hugo
+localLinksStyle:
+  hugo:
+    indexFileName: "_index.md"
 
 transformations:
   - glob: "../README.md"
@@ -44,6 +45,12 @@ transformations:
         title: "{{ .Origin.FirstHeader }}"
         lastmod: "{{ .Origin.LastMod }}"
 
-  - glob: "**/*.md"
+  - glob: "**.md"
     frontMatter:
       <<: *defaultFrontMatter
+
+  - glob: "../web/assets/**"
+    path: "/../../static/**"
+
+  - glob: "**"
+    path: "/../../static/**"
