@@ -1,6 +1,6 @@
 # 2021-06: Handbook
 
-* **Owners:**:
+* **Owners:**
   * [`@bwplotka`](https://github.com/bwplotka)
 
 * **Other docs:**
@@ -10,7 +10,7 @@
   * [Observability Team Process (Internal)](https://docs.google.com/document/d/1eojXStPdq1hYwv36pjE-vKR1q3dlBbpIx5w_L_v2gNo/edit)
   * [Monitoring Team Processes (Internal)](https://drive.google.com/drive/folders/1yU5DYhpBLzmp3q9SIhudRMZ1rsmQ_sR2)
 
-> TL;DR: I would like to propose to put all public documentation pieces related to the Observability Group (and not tied to a specific project) in the public GitHub repository called [`handbook`](https://github.com/rhobs/handbook). I propose to review all documents with a similar flow as code and put documents in the form of markdown files that can be read from both GitHub UI and automatically served on https://rhobs-handbook.netlify.app/ website.
+> TL;DR: I would like to propose to put all public documentation pieces related to the Monitoring Group (and not tied to a specific project) in the public GitHub repository called [`handbook`](https://github.com/rhobs/handbook). I propose to review all documents with a similar flow as code and put documents in the form of markdown files that can be read from both GitHub UI and automatically served on https://rhobs-handbook.netlify.app/ website.
 >
 > The [diagram](#flow-of-addingconsuming-documentation-to-handbook) below shows what fits into this handbook and what should be distributed to the relevant upstream project (e.g developer documentation).
 
@@ -25,7 +25,7 @@
 * Without a place for written design proposals (those in progress, those accepted and rejected), the team risks repeating iterating over the same ideas or challenging old ideas already researched.
 * Without good operational or configuration knowledge, we keep asking the same question about, e.g. how to rollout service X or contribute to X etc.
 
-##### Despite strong incentives, writing documentation was proven to be one the most unwanted task among engineers
+##### Despite strong incentives, writing documentation was proven to be of one the most unwanted task among engineers
 
 Demotivation is because our (Google Docs based) process tends to create the following obstacles:
 
@@ -53,24 +53,27 @@ On a similar side, anyone looking for information about our teams' work, proposa
 
 Goals and use cases for the solution as proposed in [How](#how):
 
-* Single source of truth for Observability Group Team docs.
+* Single source of truth for Monitoring Group Team docs like processes, overviews, runbooks, links for internal content.
 * Have a consistent documentation format that is readable and understandable.
 * Searchable and easily discoverable.
 * Process of adding documents should be easy and consistent.
 * Automation and normal review process should be in place to ensure high quality (e.g. link checking).
 * Allow public collaboration on processes and other docs.
 
+> NOTE: We would love to host Logging and Tracing Teams if they choose to follow our process, but we don't want to enforce it. We are happy to extend this handbook from Monitoring Group handbook to Observability Group, but it has to grow organically (if Logging, Tracing team will see the value joining us here).
+
 ### Audience
 
 The currently planned audience for proposed documentation content is following (in importance order):
 
-1. Observability Group Team Members (Monitoring Scrum Teams, optionally Logging and Tracing if they choose to follow our process).
+1. Monitoring Group Team Members.
 2. External Teams at Red Hat.
 3. Teams outside Red Hat, contributors to our projects, potential future hires, people interested in best practices, team processes etc.
 
 ## Non-Goals
 
 * Support other formats than `Markdown` e.g. Asciidoc.
+* Replace official project or product documentation.
 * Precise design proposal process (it will come in a separate proposal).
 * Sharing Team Statuses, we use JIRA and GH issues for that.
 

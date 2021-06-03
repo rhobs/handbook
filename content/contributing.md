@@ -2,7 +2,7 @@
 
 This document explains the process of modifying this handbook.
 
-> You were instead looking at how to contribute to the projects we maintain and contribute as part of Observability Group? Check out the [Projects list!](Projects/README.md)
+> You were instead looking at how to contribute to the projects we maintain and contribute as part of Monitoring Group? Check out the [Projects list!](Projects/README.md)
 
 ## Who can Contribute?
 
