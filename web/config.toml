@@ -33,8 +33,8 @@ anchor = "smart"
 # Language configuration
 
 [languages.en]
-title = "Red Hat Observability Group Handbook"
-description = "Red Hat Observability Group Handbook"
+title = "Red Hat Monitoring Group Handbook"
+description = "Red Hat Monitoring Group Handbook"
 languageName = "English"
 
 [markup.goldmark.renderer]
@@ -50,7 +50,7 @@ guessSyntax = "true"
 section = ["HTML", "print"]
 
 [params]
-copyright = "The Red Hat Observability Group Authors"
+copyright = "The Red Hat Monitoring Group Authors"
 
 # Repository configuration (URLs for in-page links to opening issues and suggesting changes)
 # TODO(bwplotka): Changes are suggested to wrong, auto-generated directory, disabled for now. Fix it!
