@@ -25,7 +25,7 @@
 * Without a place for written design proposals (those in progress, those accepted and rejected), the team risks repeating iterating over the same ideas or challenging old ideas already researched.
 * Without good operational or configuration knowledge, we keep asking the same question about, e.g. how to rollout service X or contribute to X etc.
 
-##### Despite strong incentives, writing documentation was proven to be of one the most unwanted task among engineers
+##### Despite strong incentives, writing documentation has proven to be of one the most unwanted task among engineers
 
 Demotivation is because our (Google Docs based) process tends to create the following obstacles:
 
