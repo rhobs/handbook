@@ -18,7 +18,7 @@ This section describes the process of sending metrics collected by the Cluster M
 
 ### Background
 
-In order to remote write metrics from a cluster to Observatorium using the OpenShift Cluster Monitoring stack, the cluster’s Prometheus servers must be configured to authenticate and make requests to the correct URL. The OpenShift Cluster Monitoring ConfigMap exposes a user-editable field for configuring the Prometheus servers to remote write. Observatorium relies on OAuth to authenticate the incoming requests. Native [OAuth support for remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#oauth2) was added in Prometheus v2.27.0. However, if you are using an older version of Prometheus that does not support OAuth, follow the instructions under [Process for Prometheus version < 2.27.0](#process-for-prometheus-version-2.27.0) heading.
+In order to remote write metrics from a cluster to Observatorium using the OpenShift Cluster Monitoring stack, the cluster’s Prometheus servers must be configured to authenticate and make requests to the correct URL. The OpenShift Cluster Monitoring ConfigMap exposes a user-editable field for configuring the Prometheus servers to remote write. Observatorium relies on OAuth to authenticate the incoming requests. Native [OAuth support for remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#oauth2) was added in Prometheus v2.27.0. However, if you are using an older version of Prometheus that does not support OAuth, follow the instructions under [Process for Prometheus version < 2.27.0](#process-for-prometheus-version--2270) heading.
 
 ### Process for Prometheus v2.27.0+
 
