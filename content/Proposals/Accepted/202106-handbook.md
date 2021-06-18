@@ -100,7 +100,7 @@ The idea of a handbook is not new. Many organizations do this e.g [GitLab](https
 
 ### Flow of Adding/Consuming Documentation to Handbook
 
-![flow](../../assets/handbook-proposal.png)
+![flow](../../assets/handbook-process.png)
 
 If you want to add or edit markdown documentation, refer to [our technical guide](../../contributing.md).
 

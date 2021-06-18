@@ -38,7 +38,9 @@ This section will guide you through changing, adding or removing anything from h
 
 ### How to decide where to put the content?
 
-![flow](assets/handbook-proposal.png)
+![flow](assets/handbook-process.png)
+
+NOTE: Make sure to not duplicate too much information with the project documentation. Docs are aging quickly.
 
 ### Editing the content
 
