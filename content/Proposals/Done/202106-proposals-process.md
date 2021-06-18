@@ -95,7 +95,7 @@ Let's assume the idea sounds interesting to you; what to do next, where to propo
 
 ### On Review Process
 
-As you see on the above algorithm, if the content relates to any upstream project, it should be proposed, reviewed and potentially implemented together with the community. This does not mean that you can involve other team members towards this effort. Share the proposal with team members, even if they are not part of maintainer's team on a given project, any feedback, and voice are useful and can help to move idea further.
+As you see on the above algorithm, if the content relates to any upstream project, it should be proposed, reviewed and potentially implemented together with the community. This does not mean that you cannot involve other team members towards this effort. Share the proposal with team members, even if they are not part of maintainer's team on a given project, any feedback, and voice are useful and can help to move idea further.
 
 Similar to proposals that touch our team only, despite mentioning mandatory approval process from leads, anyone can give feedback! Our process is in fact very similar to [Hashicorp's RFC process](https://works.hashicorp.com/articles/writing-practices-and-culture):
 
