@@ -18,41 +18,9 @@ This section describes the process of sending metrics collected by the Cluster M
 
 ### Background
 
-In order to remote write metrics from a cluster to Observatorium using the OpenShift Cluster Monitoring stack, the cluster’s Prometheus servers must be configured to authenticate and make requests to the correct URL. The OpenShift Cluster Monitoring ConfigMap exposes a user-editable field for configuring the Prometheus servers to remote write. Observatorium relies on OAuth to authenticate the incoming requests. Native [OAuth support for remote write](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#oauth2) was added in Prometheus v2.27.0. However, if you are using an older version of Prometheus that does not support OAuth, follow the instructions under [Process for Prometheus version < 2.27.0](#process-for-prometheus-version--2270) heading.
+In order to remote write metrics from a cluster to Observatorium using the OpenShift Cluster Monitoring stack, the cluster’s Prometheus servers must be configured to authenticate and make requests to the correct URL. The OpenShift Cluster Monitoring ConfigMap exposes a user-editable field for configuring the Prometheus servers to remote write. However, because Prometheus does not support OAuth, it cannot authenticate directly with Observatorium and because the Cluster Monitoring stack is, for all intents and purposes, immutable, the Prometheus Pods cannot be configured with sidecars to do the authentication. For this reason, the Prometheus servers must be configured to remote write through an authentication proxy running on the cluster that in turn is pointed at Observatorium and is able to perform an OAuth flow and set the received access token on proxied requests.
 
-### Process for Prometheus v2.27.0+
-
-> NOTE: This is not working yet as support for authentication using OAuth is not yet merged in Prometheus Operator (GH issue: [#4036](https://github.com/prometheus-operator/prometheus-operator/issues/4036)).
-
-The OpenShift Cluster Monitoring stack provides a ConfigMap that can be used to modify the configuration and behavior of the components. You need to modify the “cluster-monitoring-config” ConfigMap in the cluster to include a remote-write configuration for Prometheus as shown below. Please replace `<tenant>`, `<your_client_id>`, and `<your_client_secret>` with appropriate values.
-
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cluster-monitoring-config
-  namespace: openshift-monitoring
-data:
-  config.yaml: |
-    prometheusK8s:
-      retention: 2h
-      remoteWrite:
-      - url: https://observatorium-mst.api.stage.openshift.com/api/metrics/v1/<tenant>/api/v1/receive
-        oauth2:
-          client_id: <your_client_id>
-          client_secret: <your_client_secret>
-          token_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
-        queueConfig:
-          max_samples_per_send: 500
-          batch_send_deadline: 60s
-        write_relabel_configs:
-          - source_labels: [__name__]
-          - regex: metric_name.*
-```
-
-### Process for Prometheus version < 2.27.0
-
-Since Prometheus v2.26.x doesn’t support OAuth for remote write, it won’t be able to directly authenticate with Observatorium and because the Cluster Monitoring stack is, for all intents and purposes, immutable, the Prometheus Pods cannot be configured with sidecars to do the authentication. For this reason, the Prometheus servers must be configured to remote write through an authentication proxy running on the cluster that in turn is pointed at Observatorium and is able to perform an OAuth flow and set the received access token on proxied requests.
+### Process
 
 #### 1. Configure the Cluster Monitoring Stack
 
@@ -199,35 +167,4 @@ spec:
         matchLabels:
           prometheus: k8s
 EOF
-```
-
-## 2. Using Grafana to Read Metrics from Observatorium
-
-This section describes the process of querying metrics from Observatorium using an existing Grafana server.
-
-### Background
-
-In order to query metrics from Observatorium using a Grafana server, the Grafana server must be configured with Observatorium as a datasource and with the proper authentication parameters. Grafana supports configuring generic OAuth authentication providers, which allows the server to natively authenticate with sso.redhat.com, without the need for an intermediate proxy.
-
-### Process
-
-#### 1. Configure a New OAuth Provider in Grafana
-
-Begin by defining a new OAuth provider for sso.redhat.com in the Grafana server. The example snippet shown below could be added to the configuration of an existing Grafana server:
-
-```json
-"routes": [
-  {
-    "path": "example",
-    "url": "https://api.example.com",
-    "jwtTokenAuth": {
-      "url": "https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token",
-      "params": {
-        "grant_type": "client_credentials",
-        "client_id": "{{ .JsonData.clientId }}",
-        "client_secret": "{{ .SecureJsonData.clientSecret }}"
-      }
-    }
-  }
-]
 ```
