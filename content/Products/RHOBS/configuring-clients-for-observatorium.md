@@ -3,6 +3,7 @@
 - **Authors:**
   - [`@squat`](https://github.com/squat)
   - [`@spaparaju`](https://github.com/spaparaju)
+  - [`@onprem`](https://github.com/onprem)
 
 ## Overview
 
@@ -12,19 +13,19 @@ Teams that have identified a need for collecting their logs and/or metrics into 
 
 Before configuring any clients, follow the steps in the [Observatorium Tenant Onboarding doc (internal)](https://docs.google.com/document/d/1pjM9RRvij-IgwqQMt5q798B_4k4A9Y16uT2oV9sxN3g/edit) to register the necessary service accounts and give them the required permissions on the Observatorium platform. The result of this process should be an OAuth client ID and client secret pair for each new service account. Save these credentials somewhere secure.
 
-## 1. Remote Writing Metrics from the Cluster Monitoring Stack to Observatorium
+## 1. Remote Writing Metrics to Observatorium
+
+### Using the Cluster Monitoring Stack
 
 This section describes the process of sending metrics collected by the Cluster Monitoring stack on an OpenShift cluster to Observatorium.
 
-### Background
+#### Background
 
 In order to remote write metrics from a cluster to Observatorium using the OpenShift Cluster Monitoring stack, the cluster’s Prometheus servers must be configured to authenticate and make requests to the correct URL. The OpenShift Cluster Monitoring ConfigMap exposes a user-editable field for configuring the Prometheus servers to remote write. However, because Prometheus does not support OAuth, it cannot authenticate directly with Observatorium and because the Cluster Monitoring stack is, for all intents and purposes, immutable, the Prometheus Pods cannot be configured with sidecars to do the authentication. For this reason, the Prometheus servers must be configured to remote write through an authentication proxy running on the cluster that in turn is pointed at Observatorium and is able to perform an OAuth flow and set the received access token on proxied requests.
 
-### Process
-
 #### 1. Configure the Cluster Monitoring Stack
 
-The OpenShift Cluster Monitoring stack provides a ConfigMap that can be used to modify the configuration and behavior of the components. The first step is to modify the “cluster-monitoring-config” ConfigMap in the cluster to include a remote-write configuration for Prometheus as shown below:
+The OpenShift Cluster Monitoring stack provides a ConfigMap that can be used to modify the configuration and behavior of the components. The first step is to modify the “cluster-monitoring-config” ConfigMap in the cluster to include a remote write configuration for Prometheus as shown below:
 
 ```yaml
 apiVersion: v1
@@ -48,7 +49,7 @@ data:
 
 #### 2. Deploy the Observatorium Token-Refresher Proxy
 
-Because Prometheus does not have built-in support for acquiring OAuth2 access tokens for authorization, which are required by Observatorium, the in-cluster Prometheus must remote-write its data through a proxy that is able to fetch access tokens and set them as headers on outbound requests. The Observatorium stack provides such a proxy, which may be deployed to the “openshift-monitoring” namespace and guarded by a NetworkPolicy so that only Prometheus can use the access tokens. The following snippet shows an example of how to deploy the proxy for the stage environment:
+Because Prometheus does not have built-in support for acquiring OAuth2 access tokens for authorization, which are required by Observatorium, the in-cluster Prometheus must remote write its data through a proxy that is able to fetch access tokens and set them as headers on outbound requests. The Observatorium stack provides such a proxy, which may be deployed to the “openshift-monitoring” namespace and guarded by a NetworkPolicy so that only Prometheus can use the access tokens. The following snippet shows an example of how to deploy the proxy for the stage environment:
 
 ```bash
 export TENANT=<your-tenant>
@@ -167,4 +168,27 @@ spec:
         matchLabels:
           prometheus: k8s
 EOF
+```
+
+### Using a Self-Managed Prometheus Server
+
+This section describes the process of sending metrics collected by a Prometheus server to Observatorium.
+
+#### Background
+
+In order to remote write metrics from a Prometheus server to Observatorium, the server must be configured to authenticate and make requests to the correct URL using the [`remote_write`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) section of the Prometheus configuration file. Prometheus needs to be configured to use OAuth2 for authenticating the remote write requests to Observatorium. This can be done by setting appropriate fields in the [`oauth2`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#oauth2) section under [`remote_write`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write).
+
+> **NOTE:** OAuth2 support was added to Prometheus in version 2.27.0. If using an older version of Prometheus without native OAuth2 support, the remote write traffic needs to go through a proxy such as [token-refresher](https://github.com/observatorium/token-refresher/), similar to what is described above for Cluster Monitoring Stack.
+
+#### 1. Modify the Prometheus configuration
+
+The configuration file for Prometheus must be patched to include a remote write configuration as shown below. `<tenant>`, `<client_id>`, and `<client_secret>` need to be replaced with appropriate values.
+
+```yaml
+remote_write:
+  - url: https://observatorium-mst.api.stage.openshift.com/api/metrics/v1/<tenant>/api/v1/receive
+    oauth2:
+      client_id: <client_id>
+      client_secret: <client_secret>
+      token_url: https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
 ```
