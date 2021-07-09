@@ -1,6 +1,6 @@
 # Observatorium
 
-Observatorium is an observability system design to enable ingestion, storage (short and long term) and querying capabilities for three major observability signals: metrics, logging and tracing. It unifies horizontally scalable, multi-tenant systems like Thanos, Loki and in future Jaeger to deploy them in single stack with consistent APIs. On top of that it's designed to be managed as a service thanks to consistent tenancy, authorization, rate limiting across all three signals.
+Observatorium is an observability system designed to enable the ingestion, storage (short and long term) and querying capabilities for three major observability signals: metrics, logging and tracing. It unifies horizontally scalable, multi-tenant systems like Thanos, Loki, and in the future, Jaeger to deploy them in a single stack with consistent APIs. On top of that it's designed to be managed as a service thanks to consistent tenancy, authorization and rate limiting across all three signals.
 
 ### Official Documentation
 
@@ -8,7 +8,7 @@ https://observatorium.io
 
 ### APIs
 
-TBD
+TBD(https://github.com/rhobs/handbook/issues/22)
 
 #### Read: Metrics
 
@@ -17,10 +17,6 @@ TBD
 * GET /api/metrics/v1/api/v1/series
 * GET /api/metrics/v1/api/v1/labels
 * GET /api/metrics/v1/api/v1/label/<name>/values
-
-### Tutorials
-
-TBD
 
 ### Notable Talks/Blog Posts
 
@@ -45,10 +41,10 @@ TBD
 
 We use Observatorium as a Service for our [Red Hat Observability Service (RHOBS)](RHOBS/README.md).
 
-We also know several other companies installing Observatorium on their own (as of 2021.07.07):
+We also know of several other companies installing Observatorium on their own (as of 2021.07.07):
 
 * RHACM
-* Manage Tenants until they can get access to RHBOBS e.g Kafka Team
+* Managed Tenants until they can get access to RHBOBS (e.g. Kafka Team)
 * IBM
 * GitPod
 
