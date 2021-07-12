@@ -7,11 +7,11 @@
 
 ## Overview
 
-Teams that have identified a need for collecting their logs and/or metrics into a centralized service that offers querying and dashboarding may choose to send their data to Red Hat’s hosted Observatorium instance. This document details how to configure clients, such as Prometheus, to remote write data for tenants who have been onboarded to Observatorium following the team’s onboarding doc: [Onboarding a Tenant into Observatorium (internal)](https://docs.google.com/document/d/1pjM9RRvij-IgwqQMt5q798B_4k4A9Y16uT2oV9sxN3g/edit).
+Teams that have identified a need for collecting their logs and/or metrics into a centralized service that offers querying and dashboarding may choose to send their data to Red Hat’s hosted Observatorium instance. This document details how to configure clients, such as Prometheus, to remote write data for tenants who have been onboarded to Observatorium following the team’s onboarding doc: [Onboarding a Tenant into RHOBS](onboarding-a-tenant-into-rhobs.md).
 
 ## 0. Register Service Accounts and Configure RBAC
 
-Before configuring any clients, follow the steps in the [Observatorium Tenant Onboarding doc (internal)](https://docs.google.com/document/d/1pjM9RRvij-IgwqQMt5q798B_4k4A9Y16uT2oV9sxN3g/edit) to register the necessary service accounts and give them the required permissions on the Observatorium platform. The result of this process should be an OAuth client ID and client secret pair for each new service account. Save these credentials somewhere secure.
+Before configuring any clients, follow the steps in the [RHOBS Tenant Onboarding doc](onboarding-a-tenant-into-rhobs.md) to register the necessary service accounts and give them the required permissions on the Observatorium platform. The result of this process should be an OAuth client ID and client secret pair for each new service account. Save these credentials somewhere secure.
 
 ## 1. Remote Writing Metrics to Observatorium
 
