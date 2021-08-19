@@ -62,8 +62,7 @@ All or configuration is rooted in https://github.com/rhobs/configuration configu
   * If any other file was changed, AppSRE engineer has to lgtm it.
 * When merged, CI will deploy the changes to cluster specified in `saas.yaml` e.g to production.
 
-NOTE: Don't change both production and staging in the same MR.
-NOTE: Deploy to production only changed that were previously in staging (automation for this TBD).
+NOTE: Don't change both production and staging in the same MR. NOTE: Deploy to production only changed that were previously in staging (automation for this TBD).
 
 You can see the version change:
 * [On monitoring dashboard](e.g https://prometheus.telemeter-prod-01.devshift.net/graph?g0.range_input=1h&g0.expr=thanos_build_info&g0.tab=0)
@@ -100,22 +99,25 @@ NOTE: Following procedure applies to both Production and Staging. Many teams e.g
 
 1. If you are not on-call [notify Observability Platform on-call engineer](../../Projects/Observability/RHOBS/telemeter.md#escalations). If you are on-call, on-call engineer is not present or you agreed that you will handle this incident, go to step 2.
 2. Straight away, create JIRA for potential incident. Don't think twice, it's easy to create and essential to track incident later on. Fill the following parts:
-* Title: Symptom you see.
-* Type: Bug
-* Priority: Try to assess how important it is. If impacting production it's a "Blocker"
-* Component: RHOBS
-* (Important) Label: `incident` `no-qe`
-* Description: Mention how you were notified (ideally with link to alert/Slack thread). Mention what you know so far.
 
-![jira](jira.png) See example incident tickets [here](https://issues.redhat.com/issues/?jql=project%20%3D%20MON%20AND%20labels%20%3D%20incident)
+   * Title: Symptom you see.
+   * Type: Bug
+   * Priority: Try to assess how important it is. If impacting production it's a "Blocker"
+   * Component: RHOBS
+   * (Important) Label: `incident` `no-qe`
+   * Description: Mention how you were notified (ideally with link to alert/Slack thread). Mention what you know so far.
 
-1. If AppSRE is not yet aware, drop link to created incident ticket to #sd-app-sre channel and notify `@app-sre-primary` and `@observatorium-oncall`. Don't repeat yourself, ask everyone to follow the ticket comments.
-   1. AppSRE may or may not create dedicated channel, do communication efforts and start on-call Zoom meeting. We as the dev team don't need to worry about those elements, go to step 4.
-2. Investigate possible mitigation. Ensure the problem is mitigated before focusing on root cause analysis.
-   1. Important: Note all performed actions and observations on created JIRA ticket via comments. This allows anyone to follow up what was checked and how. It is also essential for detailed Post Mortem / RCA process later on.
-   2. Note on JIRA ticket all automation or monitoring gaps you wished you had. This will be useful for actions after the incident.
-3. Ensure if incident is mitigated with AppSRE. If yes, claim the incident being over.
-4. Investigate root cause. Note the potential long term fixes and ideas. Once the root cause is identified we can close the incident JIRA ticket.
+     ![jira](jira.png) See example incident tickets [here](https://issues.redhat.com/issues/?jql=project%20%3D%20MON%20AND%20labels%20%3D%20incident)
+
+3. If AppSRE is not yet aware, drop link to created incident ticket to #sd-app-sre channel and notify `@app-sre-primary` and `@observatorium-oncall`. Don't repeat yourself, ask everyone to follow the ticket comments.
+
+   * AppSRE may or may not create dedicated channel, do communication efforts and start on-call Zoom meeting. We as the dev team don't need to worry about those elements, go to step 4.
+4. Investigate possible mitigation. Ensure the problem is mitigated before focusing on root cause analysis.
+
+   * Important: Note all performed actions and observations on created JIRA ticket via comments. This allows anyone to follow up what was checked and how. It is also essential for detailed Post Mortem / RCA process later on.
+   * Note on JIRA ticket all automation or monitoring gaps you wished you had. This will be useful for actions after the incident.
+5. Ensure if incident is mitigated with AppSRE. Investigate root cause. If mitigation is applied and root cause is known, claim the incident being over.
+6. Note the potential long term fixes and ideas. Close the incident JIRA ticket.
 
 ### After Incident
 
