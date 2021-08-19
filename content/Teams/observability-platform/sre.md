@@ -4,7 +4,7 @@ This document explains a few processes related to operating our production softw
 
 ## Goals
 
-The main goals of our SRE work within this team is to deploy and operate software that meets functional (API) and performance (SLO) requirements of our customers.
+The main goals of our SRE work within this team is to deploy and operate software that meets functional ([API](../../Projects/Observability/observatorium.md) and performance ([Telemeter SLO](../../Projects/Observability/RHOBS/telemeter.md#service-level-agreement), [MST SLO](../../Projects/Observability/RHOBS/mst.md#service-level-agreement)) requirements of our customers.
 
 Currently, we offer internal service called [RHOBS](../../Projects/Observability/RHOBS) that is used across the company.
 
@@ -60,7 +60,14 @@ All or configuration is rooted in https://github.com/rhobs/configuration configu
 * Ask team for review. If change is impacting production heavily, notify AppSRE.
   * If only `saas.yaml` file was changed `/lgtm` from Observability Platform team is enough for PR to get merged automatically.
   * If any other file was changed, AppSRE engineer has to lgtm it.
-* When merged, CI will deploy the change to production. You can see the version change on Monitoring dashboard too e.g https://prometheus.telemeter-prod-01.devshift.net/graph?g0.range_input=1h&g0.expr=thanos_build_info&g0.tab=0.
+* When merged, CI will deploy the changes to cluster specified in `saas.yaml` e.g to production.
+
+NOTE: Don't change both production and staging in the same MR.
+NOTE: Deploy to production only changed that were previously in staging (automation for this TBD).
+
+You can see the version change:
+* [On monitoring dashboard](e.g https://prometheus.telemeter-prod-01.devshift.net/graph?g0.range_input=1h&g0.expr=thanos_build_info&g0.tab=0)
+* See report of deploy on `#team-monitoring-info` Slack channel on CoreOS Slack.
 
 ### Monitoring Resources
 
@@ -77,9 +84,11 @@ Grafana Dashboards are defined here: https://github.com/rhobs/configuration/tree
 * Ask team for review. If change is impacting production heavily, notify AppSRE.
 * When merged, CI will deploy the change to production. You can see the version change on Monitoring dashboard too e.g https://prometheus.telemeter-prod-01.devshift.net/graph?g0.range_input=1h&g0.expr=thanos_build_info&g0.tab=0.
 
-## Incident Playbook Handling
+## Incident Handling
 
 This is the process we as the Observability Team try to follow during incident response.
+
+The incident occurs when any of our services violates SLO we set with our stakeholders. Refer to [Telemeter SLO](../../Projects/Observability/RHOBS/telemeter.md#service-level-agreement) and [MST SLO](../../Projects/Observability/RHOBS/mst.md#service-level-agreement) for details on SLA.
 
 NOTE: Following procedure applies to both Production and Staging. Many teams e.g SubWatch depends on working staging, so follow similar process as production. The only difference is that *we do not need to mitigate of fix staging issues outside of office hours*.
 
@@ -89,7 +98,7 @@ NOTE: Following procedure applies to both Production and Staging. Many teams e.g
 * You got notified about potential SLA violation by the customer: Unexpected responses, things that worked before do not work now etc.
 * You touch production for unrelated reasons and noticed something worrying (error logs, un-monitored resource etc).
 
-1. If you are not on-call notify Observability Platform on-call engineer. If you are on-call, on-call engineer is not present or you agreed that you will handle this incident, go to step 2.
+1. If you are not on-call [notify Observability Platform on-call engineer](../../Projects/Observability/RHOBS/telemeter.md#escalations). If you are on-call, on-call engineer is not present or you agreed that you will handle this incident, go to step 2.
 2. Straight away, create JIRA for potential incident. Don't think twice, it's easy to create and essential to track incident later on. Fill the following parts:
 * Title: Symptom you see.
 * Type: Bug
