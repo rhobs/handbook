@@ -60,7 +60,7 @@ All or configuration is rooted in https://github.com/rhobs/configuration configu
 * Ask team for review. If change is impacting production heavily, notify AppSRE.
   * If only `saas.yaml` file was changed `/lgtm` from Observability Platform team is enough for PR to get merged automatically.
   * If any other file was changed, AppSRE engineer has to lgtm it.
-* When merged, CI will deploy the changes to cluster specified in `saas.yaml` e.g to production.
+* When merged, CI will deploy the changes to namespace specified in `saas.yaml` e.g to production.
 
 NOTE: Don't change both production and staging in the same MR. NOTE: Deploy to production only changed that were previously in staging (automation for this TBD).
 
