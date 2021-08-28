@@ -42,10 +42,11 @@ On a similar side, anyone looking for information about our teams' work, proposa
 ### Pitfalls of the current solution
 
 * It mainly exists in Google Docs, which has the following issues:
-  * Not everything is in our Team drive.
-  * Even if it's not organized well (or only clear for one person), it's not easily discoverable.
+  * Not everything is in our Team drive, there are docs not owned by us, created adhoc.
+  * It's painful to organize them well e.g in directories, since it's so easy so copy, create one.
+  * Even if it's organized well, it's not easily discoverable.
 * Existing Google doc-based documents are hard to consume. The formatting is widely different. Naming is inconsistent.
-* Document creation is rarely actionable. There is no review process, so the effort of creating a relevant document might be wasted, as the document is lost. This also leads to docs being in the half-completed state, demotivating readers to look at it.
+* *Document creation is rarely actionable*. There is no review process, so the effort of creating a relevant document might be wasted, as the document is lost. This also leads to docs being in the half-completed state, demotivating readers to look at it.
 * It's hard to track previous discussions around docs, who approved them (e.g. proposals).
 * It's not public, and it's hard to share best practices with other external and internal teams.
 
