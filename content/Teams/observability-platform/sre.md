@@ -83,6 +83,23 @@ Grafana Dashboards are defined here: https://github.com/rhobs/configuration/tree
 * Ask team for review. If change is impacting production heavily, notify AppSRE.
 * When merged, CI will deploy the change to production. You can see the version change on Monitoring dashboard too e.g https://prometheus.telemeter-prod-01.devshift.net/graph?g0.range_input=1h&g0.expr=thanos_build_info&g0.tab=0.
 
+## Support Rotation
+
+Currently, RHOBS services are supported 24h/7d by two teams:
+
+* `AppSRE` team for infrastructure and "generalist" support. They are our first incident response point. They try to support our stack as far as runbooks and general knowledge allows.
+* `Observability Platform` Team (Dev on-call) for incidents impacting SLA outside of the AppSRE expertise (bug fixes, more complex troubleshooting). We are notified when AppSRE needs.
+
+As of 2021-09-21 on-call rotation schedule changed to accommodate team membership changes. It looks as follows (showing two example months):
+
+![RHOBS](../../assets/on-call2021.png)
+
+![RHOBS](../../assets/on-call2021-2.png)
+
+Currently, there is only Bartek on-call for single week per 4 weeks. Then we have "fake" slot by Antoine, which represents NO on-call duties during that time for dev team. This means any bigger problems outside of office hours handled by AppSRE only and delegated to next office hours (worse case ~3 days). Our SLOs should take this into account.
+
+With the time we will be adding more team members to on-call rota to fill gaps.
+
 ## Incident Handling
 
 This is the process we as the Observability Team try to follow during incident response.
