@@ -83,7 +83,7 @@ Grafana Dashboards are defined here: https://github.com/rhobs/configuration/tree
 * Ask team for review. If change is impacting production heavily, notify AppSRE.
 * When merged, CI will deploy the change to production. You can see the version change on Monitoring dashboard too e.g https://prometheus.telemeter-prod-01.devshift.net/graph?g0.range_input=1h&g0.expr=thanos_build_info&g0.tab=0.
 
-## Support Rotation
+## On-Call Rotation
 
 Currently, RHOBS services are supported 24h/7d by two teams:
 
