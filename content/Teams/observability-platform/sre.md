@@ -90,13 +90,13 @@ Currently, RHOBS services are supported 24h/7d by two teams:
 * `AppSRE` team for infrastructure and "generalist" support. They are our first incident response point. They try to support our stack as far as runbooks and general knowledge allows.
 * `Observability Platform` Team (Dev on-call) for incidents impacting SLA outside of the AppSRE expertise (bug fixes, more complex troubleshooting). We are notified when AppSRE needs.
 
-As of 2021-09-21 on-call rotation schedule changed to accommodate team membership changes. It looks as follows (showing two example months):
+As of 2021-09-21 on-call rotation schedule changed to accommodate team membership changes. Currently, there is only Bartek on-call every single week per 4 weeks. Then we have "fake" slot named "Antoine", which represents NO on-call duties during that time for dev team. This means any bigger problems outside of office hours handled by AppSRE only and delegated to next office hours (worse case ~3 days). Our SLOs should take this into account.
+
+The change looks as follows (showing two example months):
 
 ![RHOBS](../../assets/on-call2021.png)
 
 ![RHOBS](../../assets/on-call2021-2.png)
-
-Currently, there is only Bartek on-call for single week per 4 weeks. Then we have "fake" slot by Antoine, which represents NO on-call duties during that time for dev team. This means any bigger problems outside of office hours handled by AppSRE only and delegated to next office hours (worse case ~3 days). Our SLOs should take this into account.
 
 With the time we will be adding more team members to on-call rota to fill gaps.
 
