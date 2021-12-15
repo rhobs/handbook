@@ -25,7 +25,7 @@ docs-check: $(MDOX)
 web-pre: ## Pre process docs using mdox transform which converts it from GitHub structure to Hugo one.
 web-pre: $(MDOX)
 	@rm -rf $(WEBSITE_DIR)/content # Do it in mdox itself.
-	$(MDOX) transform --log.level=debug -c .mdox.yaml
+	$(MDOX) transform --log.level=debug --config-file=.mdox.yaml
 
 $(WEBSITE_DIR)/node_modules:
 	@git submodule update --init --recursive
