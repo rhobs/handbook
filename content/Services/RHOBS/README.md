@@ -7,7 +7,7 @@
 
 ## What
 
-Red Hat Observability Service (RHOBS) is a managed, centralized, multi-tenant, scalable backend for observability data. Functionally it is an internal deployment of [Observatorium](../observatorium.md) project. RHOBS is designed to allow ingesting, storing and consuming (visualisations, import, alerting, correlation) observability signals like metrics, logging and tracing.
+Red Hat Observability Service (RHOBS) is a managed, centralized, multi-tenant, scalable backend for observability data. Functionally it is an internal deployment of [Observatorium](../../Projects/Observability/observatorium.md) project. RHOBS is designed to allow ingesting, storing and consuming (visualisations, import, alerting, correlation) observability signals like metrics, logging and tracing.
 
 This document provides the basic overview of the RHOBS service. If you want to learn about RHOBS architecture, look for [Observatorium](https://observatorium.io) default deployment and its design.
 
@@ -25,26 +25,26 @@ It’s worth noting that there is also a significant benefit to collecting and u
 * Correlating signals and creating a smooth and richer debugging UX.
 * Sharing common functionality, like rate limiting, retries, auth, etc, which allows a consistent integration and management experience for users.
 
-The Openshift Monitoring Team began preparing for this shift in 2018 with the [Telemeter](telemeter.md) Service. In particular, while creating the second version of the Telemeter Service, we put effort into developing and contributing to open source systems and integration to design [“Observatorium”](../observatorium.md): a multi-signal, multi-tenant system that can be operated easily and cheaply as a Service either by Red Hat or on-premise. After extending the scope of the RHOBS, Telemeter become the first "tenant" of the RHOBS.
+The Openshift Monitoring Team began preparing for this shift in 2018 with the [Telemeter](use-cases/telemetry.md) Service. In particular, while creating the second version of the Telemeter Service, we put effort into developing and contributing to open source systems and integration to design [“Observatorium”](../../Projects/Observability/observatorium.md): a multi-signal, multi-tenant system that can be operated easily and cheaply as a Service either by Red Hat or on-premise. After extending the scope of the RHOBS, Telemeter become the first "tenant" of the RHOBS.
 
-In Summer 2020, the Monitoring Team together with the OpenShift Logging Team added a logging signal to [“Observatorium”](../observatorium.md) and started to manage it for internal teams as the RHOBS.
+In Summer 2020, the Monitoring Team together with the OpenShift Logging Team added a logging signal to [“Observatorium”](../../Projects/Observability/observatorium.md) and started to manage it for internal teams as the RHOBS.
 
 ### Status
 
 RHOBS is running in production and has already been offered to various internal teams, with more extensions and expansions coming in the near future.
 
-*There is currently no plan to offer RHOBS to external customers.* However anyone is welcome to deploy and manage an RHOBS-like-service on their own using [Observatorium](../observatorium.md).
+*There is currently no plan to offer RHOBS to external customers.* However anyone is welcome to deploy and manage an RHOBS-like-service on their own using [Observatorium](../../Projects/Observability/observatorium.md).
 
 Usage (state as of 2021.07.01):
 
 The metric usage is visualised in the following diagram:
 
-![RHOBS](../../../assets/rhobs.png)
+![RHOBS](../../assets/rhobs.png)
 
 RHOBS is functionally separated into two main usage categories:
 
-* Since 2018 we run Telemeter tenant for metric signal (hard tenancy, `telemeter-prod-01` cluster). See [telemeter](telemeter.md) for details.
-* Since 2021 we ingest metrics for selected Managed Services as soft tenants in an independent deployment (seperate soft tenant, `telemeter-prod-01` cluster). See [MST](mst.md) for details.
+* Since 2018 we run Telemeter tenant for metric signal (hard tenancy, `telemeter-prod-01` cluster). See [telemeter](use-cases/telemetry.md) for details.
+* Since 2021 we ingest metrics for selected Managed Services as soft tenants in an independent deployment (separate soft tenant, `telemeter-prod-01` cluster). See [MST](use-cases/observability.md) for details.
 
 Other signals:
 

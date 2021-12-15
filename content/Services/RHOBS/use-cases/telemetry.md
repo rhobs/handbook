@@ -1,4 +1,4 @@
-# Telemeter
+# Telemetry ("Telemeter")
 
 > For RHOBS Overview see [this document](README.md)
 

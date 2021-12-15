@@ -52,9 +52,9 @@ https://thanos.io/tip/contributing/contributing.md/#adding-new-features--compone
 We use Thanos in many places within Red Hat, notably:
 
 * In [Prometheus Operator (sidecar)](prometheusOp.md)
-* In Openshift Platform Monitoring (PM) (see [CMO](openshiftcmo.md))
+* In Openshift Platform Monitoring (PM) (see [CMO](../../Products/OpenshiftMonitoring))
 * In Openshift User Workload Monitoring (UWM)
-* In [RHOBS](RHOBS) (so [Observatorium](observatorium.md))
+* In [RHOBS](../../Services/RHOBS) (so [Observatorium](observatorium.md))
 
 ### Maintainers
 

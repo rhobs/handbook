@@ -10,7 +10,7 @@ If you wish to use this tool against RHOBS, contact us to discuss this feature r
 
 ### Telemeter Analytics
 
-DataHub and CCX teams are currently leveraging such analytics pipeline based on [Telemeter](tenant-groups/telemeter.md) from group. The pipeline looks as follows:
+DataHub and CCX teams are currently leveraging such analytics pipeline based on [Telemeter](use-cases/telemetry.md). The pipeline looks as follows:
 
 ![](../../assets/telemeter-analytics.png)
 
