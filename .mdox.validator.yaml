@@ -1,0 +1,5 @@
+version: 1
+
+validators:
+  - type: ignore
+    regex: https://.*

@@ -18,8 +18,7 @@ docs: $(MDOX)
 docs-check: ## Checks if docs are localised and links are correct.
 docs-check: $(MDOX)
 	$(MDOX) fmt --check \
--l --links.validate.without-address-regex="https://.*" \
---links.localize.address-regex="https://rhobs-handbook.netlify.app/.*" *.md $(MD_FILES_TO_FORMAT)
+-l --links.validate.config-file=.mdox.validator.yaml --links.localize.address-regex="https://rhobs-handbook.netlify.app/.*" *.md $(MD_FILES_TO_FORMAT)
 
 .PHONY: web-pre
 web-pre: ## Pre process docs using mdox transform which converts it from GitHub structure to Hugo one.
