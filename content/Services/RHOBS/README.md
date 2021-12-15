@@ -67,5 +67,5 @@ Telemeter part client side is maintained by In-cluster Monitoring team, but mana
 
 For support see:
 
-* [MST escalation flow](mst.md#support) and [MST SLA](mst.md#service-level-agreement).
-* [Telemeter escalation flow](mst.md#support) and [Telemeter SLA](mst.md#service-level-agreement).
+* [MST escalation flow](use-cases/observability.md#support) and [MST SLA](use-cases/observability.md#service-level-agreement).
+* [Telemeter escalation flow](use-cases/telemetry.md#support) and [Telemeter SLA](use-cases/telemetry.md#service-level-agreement).
