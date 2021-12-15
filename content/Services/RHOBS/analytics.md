@@ -1,6 +1,6 @@
 # Analytics based on Observability Data
 
-We use the [`Apache Parquet`](https://parquet.apache.org/) format (e.g [Amazon RedShift](https://aws.amazon.com/redshift/)) to persist metrics data for RHOBS analytics. 
+We use the [`Apache Parquet`](https://parquet.apache.org/) format (e.g [Amazon RedShift](https://aws.amazon.com/redshift/)) to persist metrics data for RHOBS analytics.
 
 Red Hat maintains community-driven project that is able to transform Prometheus data into Parquet files. See [Obslytics project to learn more](https://github.com/thanos-community/obslytics). It works by consuming (currently internal) RHOBS Store API.
 
