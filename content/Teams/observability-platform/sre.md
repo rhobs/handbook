@@ -4,9 +4,9 @@ This document explains a few processes related to operating our production softw
 
 ## Goals
 
-The main goals of our SRE work within this team is to deploy and operate software that meets functional ([API](../../Projects/Observability/observatorium.md) and performance ([Telemeter SLO](../../Projects/Observability/RHOBS/telemeter.md#service-level-agreement), [MST SLO](../../Projects/Observability/RHOBS/mst.md#service-level-agreement)) requirements of our customers.
+The main goals of our SRE work within this team is to deploy and operate software that meets functional ([API](../../Projects/Observability/observatorium.md) and performance ([Telemeter SLO](../../Services/RHOBS/use-cases/telemetry.md#service-level-agreement), [MST SLO](../../Services/RHOBS/use-cases/observability.md#service-level-agreement)) requirements of our customers.
 
-Currently, we offer internal service called [RHOBS](../../Projects/Observability/RHOBS) that is used across the company.
+Currently, we offer internal service called [RHOBS](../../Services/RHOBS) that is used across the company.
 
 ## Releasing Changes / Patches
 
@@ -104,7 +104,7 @@ With the time we will be adding more team members to on-call rota to fill gaps.
 
 This is the process we as the Observability Team try to follow during incident response.
 
-The incident occurs when any of our services violates SLO we set with our stakeholders. Refer to [Telemeter SLO](../../Projects/Observability/RHOBS/telemeter.md#service-level-agreement) and [MST SLO](../../Projects/Observability/RHOBS/mst.md#service-level-agreement) for details on SLA.
+The incident occurs when any of our services violates SLO we set with our stakeholders. Refer to [Telemeter SLO](../../Services/RHOBS/use-cases/telemetry.md#service-level-agreement) and [MST SLO](../../Services/RHOBS/use-cases/observability.md#service-level-agreement) for details on SLA.
 
 NOTE: Following procedure applies to both Production and Staging. Many teams e.g SubWatch depends on working staging, so follow similar process as production. The only difference is that *we do not need to mitigate of fix staging issues outside of office hours*.
 
@@ -114,7 +114,7 @@ NOTE: Following procedure applies to both Production and Staging. Many teams e.g
 * You got notified about potential SLA violation by the customer: Unexpected responses, things that worked before do not work now etc.
 * You touch production for unrelated reasons and noticed something worrying (error logs, un-monitored resource etc).
 
-1. If you are not on-call [notify Observability Platform on-call engineer](../../Projects/Observability/RHOBS/telemeter.md#escalations). If you are on-call, on-call engineer is not present or you agreed that you will handle this incident, go to step 2.
+1. If you are not on-call [notify Observability Platform on-call engineer](../../Services/RHOBS/use-cases/telemetry.md#escalations). If you are on-call, on-call engineer is not present or you agreed that you will handle this incident, go to step 2.
 2. Straight away, create JIRA for potential incident. Don't think twice, it's easy to create and essential to track incident later on. Fill the following parts:
 
    * Title: Symptom you see.
