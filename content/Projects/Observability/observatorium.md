@@ -16,7 +16,7 @@ TBD(https://github.com/rhobs/handbook/issues/22)
 * GET /api/metrics/v1/api/v1/query_range
 * GET /api/metrics/v1/api/v1/series
 * GET /api/metrics/v1/api/v1/labels
-* GET /api/metrics/v1/api/v1/label/<name>/values
+* GET /api/metrics/v1/api/v1/label/ <name> /values
 
 ### Notable Talks/Blog Posts
 
@@ -39,7 +39,7 @@ TBD
 
 ### Our Usage
 
-We use Observatorium as a Service for our [Red Hat Observability Service (RHOBS)](RHOBS/README.md).
+We use Observatorium as a Service for our [Red Hat Observability Service (RHOBS)](../../Services/RHOBS).
 
 We also know of several other companies installing Observatorium on their own (as of 2021.07.07):
 

@@ -1,4 +1,4 @@
-# Telemeter
+# Telemetry (Telemeter)
 
 > For RHOBS Overview see [this document](README.md)
 
@@ -8,8 +8,13 @@ Telemeter is the metrics-only hard tenant of the RHOBS service designed as a cen
 
 ## Product Managers
 
-* Blair Rampling
-* Christian Heidenreich
+* Shannon Wilber
+
+## Big Picture Overview
+
+![](../../../assets/telemeter.png)
+
+*[Source](https://docs.google.com/drawings/d/1eIAxCUS2v8Bt0-Ken2gHnx-Q1u8JNPfi2rMB-Azz5zI/edit)*
 
 ## Support
 
