@@ -16,7 +16,7 @@ TBD(https://github.com/rhobs/handbook/issues/23)
 
 ![SLO](../../../assets/slo-def.png)
 
-If you manage [“Observatorium”](../../../Projects/Observability/observatorium.md), the Service Level Objectives can go ultra-high in all dimensions, such as availability and data loss. The freshness aspect for reading APIs is trickier as it also depends on client collection pipeline availability, among other things, which is out of the scope of the Observatorium.
+If you manage [“Observatorium”](../../../Projects/Observability/observatorium.md), the Service Level Objectives can go ultra-high in all dimensions, such as availability and data loss. The freshness aspect for reading APIs is trickier, as it also depends on client collection pipeline availability, among other things, which is out of the scope of the Observatorium.
 
 RHOBS has currently established the following default Service Level Objectives. This is based on the infrastructure dependencies we have listed [here (internal)](https://visual-app-interface.devshift.net/services#/services/rhobs/app.yml).
 
