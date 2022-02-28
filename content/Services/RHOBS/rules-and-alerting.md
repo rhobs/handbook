@@ -6,7 +6,7 @@ As explained in more details [here](README.md), RHOBS features a deployment of [
 
 Through the Observatorium API, tenants are able to **write** and **read** their own Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules via the [Observatorium Rules API](https://github.com/observatorium/observatorium/tree/main/docs/design/rules-api.md).
 
-Besides that, each one of the RHOBS instances has an [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) deployed, which makes possible to tenants to configure their own alerts, including a custom routing configuration to the desired receivers.
+In addition to this, each of the RHOBS instances has an [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) deployed, which makes possible for tenants to configure custom alert routing configuration to route firing alerts to their specified receivers.
 
 ## Goal
 
