@@ -8,6 +8,8 @@ Through the Observatorium API, tenants are able to **write** and **read** their 
 
 Besides that, each one of the RHOBS instances has an [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) deployed, which makes possible to tenants to configure their own alerts, including a custom routing configuration to the desired receivers.
 
+## Goal
+
 This page aims to provide a simple tutorial of how a tenant can create an alerting rule via the Observatorium Rules API and configure Alertmanager properly to get alerted via a desired receiver.
 
 For this tutorial we will be using the `rhobs` tenant in the **stage environment**. URLs may change slightly in case another tenant is used.
@@ -87,7 +89,7 @@ Where `app-sre/integrations-input/alertmanager-integration` is the path of the s
 
 You can refer to the app-interface [documentation](https://gitlab.cee.redhat.com/service/app-interface/-/tree/master#example-manage-a-templated-configmap-via-app-interface-openshiftnamespace-1yml) to get more information about this.
 
-# Summary
+## Summary
 
 After this tutorial, you should be able to:
 
@@ -95,7 +97,7 @@ After this tutorial, you should be able to:
 2. Setup Observatorium Alertmanager instances with the desired routing configuration.
 3. Check that the integration works properly on the configured receiver.
 
-# Additional resources
+## Additional resources
 
 In case problems occur, here is a list of links that can help you:
 
