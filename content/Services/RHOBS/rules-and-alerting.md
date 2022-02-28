@@ -2,7 +2,7 @@
 
 ## Overview
 
-As explained in more details [here](./README.md), RHOBS features a deployment of [Observatorium](../../Projects/Observability/observatorium.md).
+As explained in more details [here](README.md), RHOBS features a deployment of [Observatorium](../../Projects/Observability/observatorium.md).
 
 Through the Observatorium API, tenants are able to **write** and **read** their own Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules via the [Observatorium Rules API](https://github.com/observatorium/observatorium/tree/main/docs/design/rules-api.md).
 
@@ -64,8 +64,7 @@ Create a merge request to [app-interface/resources/rhobs](https://gitlab.cee.red
 * Modify the `alertmanager-routes-<namespace>-secret.yaml` file with the desired configuration.
 * After changing the file, open a merge request with the updated configuration file.
 
-The `alertmanager-routes-<namespace>-secret.yaml` already contains basic configuration, such as a customized template for slack notifications and a few receivers.
-For this tutorial, a `slack-monitoring-alerts-stage` receiver was configured with a route matching the `rhobs` tenant_id: 
+The `alertmanager-routes-<namespace>-secret.yaml` already contains basic configuration, such as a customized template for slack notifications and a few receivers. For this tutorial, a `slack-monitoring-alerts-stage` receiver was configured with a route matching the `rhobs` tenant_id:
 
 ```yaml
 routes:
@@ -78,10 +77,7 @@ For more information about how to configure Alertmanager, check out the [officia
 
 ##### Configure secrets in Vault
 
-In case you want to configure a receiver (e.g. slack, pagerduty) to receive alert notifications, it is likely necessary that you'd need to provide secrets so that Alertmanager has push access to.
-Currently, we recommend that you store the desired secrets in `Vault` and embed them via app-sre templating.
-Refer to https://vault.devshift.net/ui/vault/ to create a new secret or to retrieve an existing one.
-You can them embed this secret in your Alertmanager configuration file using the following syntax:
+In case you want to configure a receiver (e.g. slack, pagerduty) to receive alert notifications, it is likely necessary that you'd need to provide secrets so that Alertmanager has push access to. Currently, we recommend that you store the desired secrets in `Vault` and embed them via app-sre templating. Refer to https://vault.devshift.net/ui/vault/ to create a new secret or to retrieve an existing one. You can them embed this secret in your Alertmanager configuration file using the following syntax:
 
 ```yaml
 {{{ vault('app-sre/integrations-input/alertmanager-integration', 'slack_api_url') }}}
@@ -108,4 +104,3 @@ In case problems occur, here is a list of links that can help you:
 | [Alertmanager UI](https://observatorium-alertmanager-mst.api.stage.openshift.com)                                                                                             | [Alertmanager UI](https://observatorium-alertmanager.api.openshift.com)                                                                                                                             |
 | [Alertmanager logs](https://console-openshift-console.apps.app-sre-stage-0.k3s7.p1.openshiftapps.com/k8s/ns/observatorium-mst-stage/pods/observatorium-alertmanager-0/logs)   | [Alertmanager logs](https://console-openshift-console.apps.telemeter-prod.a5j2.p1.openshiftapps.com/k8s/ns/observatorium-mst-production/pods/observatorium-alertmanager-0)                          |
 | [Thanos Rule logs](https://console-openshift-console.apps.app-sre-stage-0.k3s7.p1.openshiftapps.com/k8s/ns/observatorium-metrics-stage/pods/observatorium-thanos-rule-0/logs) | [Thanos Rule logs](https://console-openshift-console.apps.telemeter-prod.a5j2.p1.openshiftapps.com/k8s/ns/observatorium-metrics-production/pods/observatorium-thanos-metric-federation-rule-0/logs) |
-
