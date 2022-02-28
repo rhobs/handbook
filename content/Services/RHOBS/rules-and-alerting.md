@@ -20,7 +20,7 @@ For this tutorial we will be using the `rhobs` tenant in the **stage environment
 
 A tenant can create and list recording and alerting rules via the Observatorium Rules API. For this tutorial we will be creating an alerting rule, to also make use of the alerting capabilities that are available in Observatorium.
 
-If you want to get more details about how to interact with the Rules API and its different endpoints, refer to the [upstream documentation](https://github.com/observatorium/observatorium/tree/main/docs/design/rules-api.md).
+If you want to get more details about how to interact with the Rules API and its different endpoints, refer to the [upstream documentation](https://observatorium.io/docs/design/rules-api.md/).
 
 In your local environment, create an alerting rule YAML file with the definition of the alert you want to add. Note that the file should be defined following the [Observatorium OpenAPI specification](https://github.com/observatorium/api/blob/main/rules/spec.yaml). The syntax is based on the Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules syntax.
 
@@ -28,16 +28,21 @@ For example:
 
 ```yaml
 groups:
-  - name: test-alerting-rule
-    interval: 30s
-    rules:
-    - alert: HighRequestLatency
-      expr: job:request_latency_seconds:mean5m{job="myjob"} > 0.5
-      for: 10m
-      labels:
-        severity: page
-      annotations:
-        summary: High request latency
+- interval: 30s
+  name: test-firing-alert
+  rules:
+  - alert: TestFiringAlert
+    annotations:
+      dashboard: https://grafana.stage.devshift.net/d/Tg-mH0rizaSJDKSADX/api?orgId=1&refresh=1m
+      description: Test firing alert
+      message: Message of firing alert here
+      runbook: https://github.com/rhobs/configuration/blob/main/docs/sop/observatorium.md
+      summary: Summary of firing alert here
+    expr: vector(1)
+    for: 1m
+    labels:
+      severity: page
+      tenant_id: 0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
 ```
 
 Now send a `PUT` request to `/api/v1/rules/raw` endpoint, specifying the YAML file, to **create** your alerting rule using the Rules API:
@@ -77,7 +82,7 @@ routes:
 
 For more information about how to configure Alertmanager, check out the [official Alertmanager documentation](https://prometheus.io/docs/alerting/latest/configuration/).
 
-##### Configure secrets in Vault
+#### Configure secrets in Vault
 
 In case you want to configure a receiver (e.g. slack, pagerduty) to receive alert notifications, it is likely necessary that you'd need to provide secrets so that Alertmanager has push access to. Currently, we recommend that you store the desired secrets in `Vault` and embed them via app-sre templating. Refer to https://vault.devshift.net/ui/vault/ to create a new secret or to retrieve an existing one. You can them embed this secret in your Alertmanager configuration file using the following syntax:
 
@@ -89,6 +94,10 @@ Where `app-sre/integrations-input/alertmanager-integration` is the path of the s
 
 You can refer to the app-interface [documentation](https://gitlab.cee.redhat.com/service/app-interface/-/tree/master#example-manage-a-templated-configmap-via-app-interface-openshiftnamespace-1yml) to get more information about this.
 
+Once your MR is merged with the desired Alertmanager configuration, the configuration file is reloaded by the Observatorium Alertmanager instances. To get your MR merged an approval from `app-sre` is necessary.
+
+You can then check if the created alerting rule is showing correctly on the configured receiver.
+
 ## Summary
 
 After this tutorial, you should be able to:
@@ -99,7 +108,7 @@ After this tutorial, you should be able to:
 
 ## Additional resources
 
-In case problems occur, here is a list of links that can help you:
+In case problems occur or if you want to have a general overview, here is a list of links that can help you:
 
 | Stage                                                                                                                                                                         | Production                                                                                                                                                                                          |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
