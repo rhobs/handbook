@@ -14,10 +14,9 @@ This page aims to provide a simple tutorial of how a tenant can create an alerti
 
 For this tutorial we will be using the `rhobs` tenant in the **stage environment**. URLs may change slightly in case another tenant is used.
 
-### Run and configure token-refresher 
+### Run and configure token-refresher
 
-To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated.
-For this you will need to run [token-refresher](https://github.com/observatorium/token-refresher) - a helper that fetches and refreshes OAuth2 access tokens via OIDC.
+To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated. For this you will need to run [token-refresher](https://github.com/observatorium/token-refresher) - a helper that fetches and refreshes OAuth2 access tokens via OIDC.
 
 First, clone the repo:
 
@@ -31,8 +30,7 @@ Now inside the same folder you've cloned the repo, run an instance of token-refr
 docker run -v /token-refresher/token/:/etc/token/ --net=host quay.io/observatorium/token-refresher --oidc.client-id=<your-client-id> --oidc.client-secret=<your-client-secret> --oidc.audience=observatorium --url=https://observatorium.api.stage.openshift.com --log.level=debug --oidc.issuer-url=https://sso.redhat.com/auth/realms/redhat-external --file=/etc/token/token
 ```
 
-Where you will need to provide your `--oicd.client-id` and `--oidc.client-secret` credentials. 
-For this tutorial we will be using `https://observatorium.api.stage.openshift.com` as target URL to proxy the requests. All requests will then have the access token in the Authorization HTTP header.
+Where you will need to provide your `--oicd.client-id` and `--oidc.client-secret` credentials. For this tutorial we will be using `https://observatorium.api.stage.openshift.com` as target URL to proxy the requests. All requests will then have the access token in the Authorization HTTP header.
 
 Now that we have set up token-refresher, let's start creating an alerting rule.
 
@@ -120,8 +118,7 @@ Once your MR is merged with the desired Alertmanager configuration, the configur
 
 If you want to test your Alertmanager configuration to verify that the configured receivers are receiving the right alert, we recommend the use of [amtool](https://github.com/prometheus/alertmanager#amtool).
 
-Note that the original configuration file in `app-interface` is a file of type `Secret`. In this case, you should aim to test the data what is under `alertmanager.yaml` [key](https://gitlab.cee.redhat.com/service/app-interface/-/blob/2f76e75628e4211b4a886301956afcc79d76d9e2/resources/rhobs/stage/alertmanager-routes-mst.secret.yaml#L8).
-There may be also `app-interface` specific annotation (e.g. how the `slack_url` is [constructed](https://gitlab.cee.redhat.com/service/app-interface/-/blob/2f76e75628e4211b4a886301956afcc79d76d9e2/resources/rhobs/stage/alertmanager-routes-mst.secret.yaml#L12) by retrieving a `Vault` secret) - which may prompt the validation by `amtool` to fail.
+Note that the original configuration file in `app-interface` is a file of type `Secret`. In this case, you should aim to test the data what is under `alertmanager.yaml` [key](https://gitlab.cee.redhat.com/service/app-interface/-/blob/2f76e75628e4211b4a886301956afcc79d76d9e2/resources/rhobs/stage/alertmanager-routes-mst.secret.yaml#L8). There may be also `app-interface` specific annotation (e.g. how the `slack_url` is [constructed](https://gitlab.cee.redhat.com/service/app-interface/-/blob/2f76e75628e4211b4a886301956afcc79d76d9e2/resources/rhobs/stage/alertmanager-routes-mst.secret.yaml#L12) by retrieving a `Vault` secret) - which may prompt the validation by `amtool` to fail.
 
 After installing `amtool` correctly, you can check the configuration of the `alertmanager.yaml` file with:
 
@@ -129,7 +126,7 @@ After installing `amtool` correctly, you can check the configuration of the `ale
 amtool check-config alertmanager.yaml
 ```
 
-It is also possible to check the configuration against specific receivers. 
+It is also possible to check the configuration against specific receivers.
 
 For our example, we have `slack-monitoring-alerts-stage` receiver configured.
 
