@@ -16,8 +16,7 @@ For this tutorial we will be using the `rhobs` tenant in the **MST stage environ
 
 ### Authenticate against the Observatorium API
 
-To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated. For this you will need to run [token-refresher](https://github.com/observatorium/token-refresher) - a helper that fetches and refreshes OAuth2 access tokens via OIDC.
-You can run a local instance of token-refresher:
+To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated. For this you will need to run [token-refresher](https://github.com/observatorium/token-refresher) - a helper that fetches and refreshes OAuth2 access tokens via OIDC. You can run a local instance of token-refresher:
 
 ```bash
 docker run -v /token-refresher/token/:/etc/token/ --net=host quay.io/observatorium/token-refresher --oidc.client-id=<your-client-id> --oidc.client-secret=<your-client-secret> --oidc.audience=observatorium --url=https://observatorium.api.stage.openshift.com --log.level=debug --oidc.issuer-url=https://sso.redhat.com/auth/realms/redhat-external --file=/etc/token/token
@@ -109,7 +108,6 @@ groups:
       severity: page
       tenant_id: 0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
 ```
-
 
 ### Create a routing configuration in Alertmanager
 
