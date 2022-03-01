@@ -14,7 +14,27 @@ This page aims to provide a simple tutorial of how a tenant can create an alerti
 
 For this tutorial we will be using the `rhobs` tenant in the **stage environment**. URLs may change slightly in case another tenant is used.
 
-*Note: Make sure the tenant you are using is correctly authenticated and authorized.*
+### Run and configure token-refresher 
+
+To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated.
+For this you will need to run [token-refresher](https://github.com/observatorium/token-refresher) - a helper that fetches and refreshes OAuth2 access tokens via OIDC.
+
+First, clone the repo:
+
+```bash
+git clone git@github.com:observatorium/token-refresher.git
+```
+
+Now inside the same folder you've cloned the repo, run an instance of token-refresher:
+
+```bash
+docker run -v /token-refresher/token/:/etc/token/ --net=host quay.io/observatorium/token-refresher --oidc.client-id=<your-client-id> --oidc.client-secret=<your-client-secret> --oidc.audience=observatorium --url=https://observatorium.api.stage.openshift.com --log.level=debug --oidc.issuer-url=https://sso.redhat.com/auth/realms/redhat-external --file=/etc/token/token
+```
+
+Where you will need to provide your `--oicd.client-id` and `--oidc.client-secret` credentials. 
+For this tutorial we will be using `https://observatorium.api.stage.openshift.com` as target URL to proxy the requests. All requests will then have the access token in the Authorization HTTP header.
+
+Now that we have set up token-refresher, let's start creating an alerting rule.
 
 ### Create an alerting rule
 
@@ -24,7 +44,7 @@ If you want to get more details about how to interact with the Rules API and its
 
 In your local environment, create an alerting rule YAML file with the definition of the alert you want to add. Note that the file should be defined following the [Observatorium OpenAPI specification](https://github.com/observatorium/api/blob/main/rules/spec.yaml). The syntax is based on the Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules syntax.
 
-For example:
+For example, you can create a file named `alerting-rule.yaml`:
 
 ```yaml
 groups:
@@ -48,7 +68,7 @@ groups:
 Now send a `PUT` request to `/api/v1/rules/raw` endpoint, specifying the YAML file, to **create** your alerting rule using the Rules API:
 
 ```bash
-curl -X PUT --data-binary @yourfile.yaml --header "Content-Type: application/yaml" https://observatorium.api.stage.openshift.com/api/metrics/v1/rhobs/api/v1/rules/raw
+curl -X PUT --data-binary @alerting-rule.yaml --header "Content-Type: application/yaml" https://observatorium.api.stage.openshift.com/api/metrics/v1/rhobs/api/v1/rules/raw
 ```
 
 Besides checking if you've got a 200 response, you can also list the rules for the tenant (in this case, `rhobs`):
@@ -96,7 +116,28 @@ You can refer to the app-interface [documentation](https://gitlab.cee.redhat.com
 
 Once your MR is merged with the desired Alertmanager configuration, the configuration file is reloaded by the Observatorium Alertmanager instances. To get your MR merged an approval from `app-sre` is necessary.
 
-You can then check if the created alerting rule is showing correctly on the configured receiver.
+#### Testing the route configuration
+
+If you want to test your Alertmanager configuration to verify that the configured receivers are receiving the right alert, we recommend the use of [amtool](https://github.com/prometheus/alertmanager#amtool).
+
+Note that the original configuration file in `app-interface` is a file of type `Secret`. In this case, you should aim to test the data what is under `alertmanager.yaml` [key](https://gitlab.cee.redhat.com/service/app-interface/-/blob/2f76e75628e4211b4a886301956afcc79d76d9e2/resources/rhobs/stage/alertmanager-routes-mst.secret.yaml#L8).
+There may be also `app-interface` specific annotation (e.g. how the `slack_url` is [constructed](https://gitlab.cee.redhat.com/service/app-interface/-/blob/2f76e75628e4211b4a886301956afcc79d76d9e2/resources/rhobs/stage/alertmanager-routes-mst.secret.yaml#L12) by retrieving a `Vault` secret) - which may prompt the validation by `amtool` to fail.
+
+After installing `amtool` correctly, you can check the configuration of the `alertmanager.yaml` file with:
+
+```bash
+amtool check-config alertmanager.yaml
+```
+
+It is also possible to check the configuration against specific receivers. 
+
+For our example, we have `slack-monitoring-alerts-stage` receiver configured.
+
+To check that the configured route matches the RHOBS `tenant_id`, we can run:
+
+```bash
+amtool config routes test --config.file=alertmanager.yaml --verify.receivers=slack-monitoring-alerts-stage tenant_id=0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
+```
 
 ## Summary
 
@@ -115,3 +156,5 @@ In case problems occur or if you want to have a general overview, here is a list
 | [Alertmanager UI](https://observatorium-alertmanager-mst.api.stage.openshift.com)                                                                                             | [Alertmanager UI](https://observatorium-alertmanager.api.openshift.com)                                                                                                                             |
 | [Alertmanager logs](https://console-openshift-console.apps.app-sre-stage-0.k3s7.p1.openshiftapps.com/k8s/ns/observatorium-mst-stage/pods/observatorium-alertmanager-0/logs)   | [Alertmanager logs](https://console-openshift-console.apps.telemeter-prod.a5j2.p1.openshiftapps.com/k8s/ns/observatorium-mst-production/pods/observatorium-alertmanager-0)                          |
 | [Thanos Rule logs](https://console-openshift-console.apps.app-sre-stage-0.k3s7.p1.openshiftapps.com/k8s/ns/observatorium-metrics-stage/pods/observatorium-thanos-rule-0/logs) | [Thanos Rule logs](https://console-openshift-console.apps.telemeter-prod.a5j2.p1.openshiftapps.com/k8s/ns/observatorium-metrics-production/pods/observatorium-thanos-metric-federation-rule-0/logs) |
+
+*Note: As of today, tenants are unable to access the Alertmanager UI. Please reach out to @observatorium-support in the #forum-observatorium to get help if needed.*
