@@ -4,7 +4,7 @@
 
 As explained in more details [here](README.md), RHOBS features a deployment of [Observatorium](../../Projects/Observability/observatorium.md).
 
-Through the Observatorium API, tenants are able to **write** and **read** their own Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules via the [Observatorium Rules API](https://github.com/observatorium/observatorium/tree/main/docs/design/rules-api.md).
+Through the Observatorium API, tenants are able to **write** and **read** their own Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules via the [Observatorium Rules API](https://observatorium.io/docs/design/rules-api.md/).
 
 In addition to this, each of the RHOBS instances has an [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) deployed, which makes possible for tenants to configure custom alert routing configuration to route firing alerts to their specified receivers.
 
@@ -12,19 +12,12 @@ In addition to this, each of the RHOBS instances has an [Alertmanager](https://p
 
 This page aims to provide a simple tutorial of how a tenant can create an alerting rule via the Observatorium Rules API and configure Alertmanager properly to get alerted via a desired receiver.
 
-For this tutorial we will be using the `rhobs` tenant in the **stage environment**. URLs may change slightly in case another tenant is used.
+For this tutorial we will be using the `rhobs` tenant in the **MST stage environment**. URLs may change slightly in case another tenant is used.
 
-### Run and configure token-refresher
+### Authenticate against the Observatorium API
 
 To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated. For this you will need to run [token-refresher](https://github.com/observatorium/token-refresher) - a helper that fetches and refreshes OAuth2 access tokens via OIDC.
-
-First, clone the repo:
-
-```bash
-git clone git@github.com:observatorium/token-refresher.git
-```
-
-Now inside the same folder you've cloned the repo, run an instance of token-refresher:
+You can run a local instance of token-refresher:
 
 ```bash
 docker run -v /token-refresher/token/:/etc/token/ --net=host quay.io/observatorium/token-refresher --oidc.client-id=<your-client-id> --oidc.client-secret=<your-client-secret> --oidc.audience=observatorium --url=https://observatorium.api.stage.openshift.com --log.level=debug --oidc.issuer-url=https://sso.redhat.com/auth/realms/redhat-external --file=/etc/token/token
@@ -66,16 +59,57 @@ groups:
 Now send a `PUT` request to `/api/v1/rules/raw` endpoint, specifying the YAML file, to **create** your alerting rule using the Rules API:
 
 ```bash
-curl -X PUT --data-binary @alerting-rule.yaml --header "Content-Type: application/yaml" https://observatorium.api.stage.openshift.com/api/metrics/v1/rhobs/api/v1/rules/raw
+curl -X PUT --data-binary @alerting-rule.yaml --header "Content-Type: application/yaml" http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules/raw
 ```
 
 Besides checking if you've got a 200 response, you can also list the rules for the tenant (in this case, `rhobs`):
 
 ```bash
-curl https://observatorium.api.stage.openshift.com/api/metrics/v1/rhobs/api/v1/rules/raw
+curl http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules/raw
 ```
 
-*Note: The endpoint URLs above refer to the stage environment. To make use of the URLs in production, use `https://observatorium.api.openshift.com` instead.*
+#### How to update an alerting rule
+
+As mentioned in the [upstream docs](https://observatorium.io/docs/design/rules-api.md/#example-request) that each time a `PUT` request is made to the `/api/v1/rules/raw` endpoint, the rules contained in the request will overwrite all the other rules for that tenant.
+
+Make sure to grab your existing raw rules and append to that the new rules you want to create.
+
+Using the example above, in case we want to create a second alerting rule, a new `alert` should be added to the file:
+
+```yaml
+groups:
+- interval: 30s
+  name: test-firing-alert
+  rules:
+  - alert: TestFiringAlert
+    annotations:
+      dashboard: https://grafana.stage.devshift.net/d/Tg-mH0rizaSJDKSADX/api?orgId=1&refresh=1m
+      description: Test firing alert!!
+      message: Message of firing alert here
+      runbook: https://github.com/rhobs/configuration/blob/main/docs/sop/observatorium.md
+      summary: Summary of firing alert here
+    expr: vector(1)
+    for: 1m
+    labels:
+      severity: page
+      tenant_id: 0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
+- interval: 30s
+  name: test-new-firing-alert
+  rules:
+  - alert: TestNewFiringAlert
+    annotations:
+      dashboard: https://grafana.stage.devshift.net/d/Tg-mH0rizaSJDKSADX/api?orgId=1&refresh=1m
+      description: Test new firing alert!!
+      message: Message of new firing alert here
+      runbook: https://github.com/rhobs/configuration/blob/main/docs/sop/observatorium.md
+      summary: Summary of new firing alert here
+    expr: vector(1)
+    for: 1m
+    labels:
+      severity: page
+      tenant_id: 0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
+```
+
 
 ### Create a routing configuration in Alertmanager
 
@@ -86,10 +120,10 @@ Now that the alerting rule is correctly created, you can start to configure Aler
 Create a merge request to [app-interface/resources/rhobs](https://gitlab.cee.redhat.com/service/app-interface/-/tree/master/resources/rhobs):
 
 * Choose the desired environment (`production`/`stage`) folder. For this tutorial, we will be using the `stage` environment.
-* Modify the `alertmanager-routes-<namespace>-secret.yaml` file with the desired configuration.
+* Modify the `alertmanager-routes-<instance>-secret.yaml` file with the desired configuration.
 * After changing the file, open a merge request with the updated configuration file.
 
-The `alertmanager-routes-<namespace>-secret.yaml` already contains basic configuration, such as a customized template for slack notifications and a few receivers. For this tutorial, a `slack-monitoring-alerts-stage` receiver was configured with a route matching the `rhobs` tenant_id:
+The `alertmanager-routes-<instance>-secret.yaml` already contains basic configuration, such as a customized template for slack notifications and a few receivers. For this tutorial, a `slack-monitoring-alerts-stage` receiver was configured with a route matching the `rhobs` tenant_id:
 
 ```yaml
 routes:
