@@ -66,7 +66,7 @@ Besides checking if you've got a 200 response, you can also list the rules for t
 curl http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules/raw
 ```
 
-Note that in the response a `tenant_id` label was added. Since Rules/Observatorium API is tenant-aware, this extra validation step is also performed.
+Note that in the response a `tenant_id` label for the particular tenant was added automatically. Since Rules/Observatorium API is tenant-aware, this extra validation step is also performed. Also, in the case of Rules expressions, the `tenant_id` labels are injected into the PromQL query, which ensures that only data from a specific tenant is selected during evaluation.
 
 ### How to update and delete an alerting rule
 
