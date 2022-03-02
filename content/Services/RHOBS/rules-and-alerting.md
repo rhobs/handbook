@@ -4,7 +4,7 @@
 
 As explained in more details [here](README.md), RHOBS features a deployment of [Observatorium](../../Projects/Observability/observatorium.md).
 
-Through the Observatorium API, tenants are able to **write** and **read** their own Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules via the [Observatorium Rules API](https://observatorium.io/docs/design/rules-api.md/).
+Through the Observatorium API, tenants are able to **write**, **read** and **delete** their own Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules via the [Observatorium Rules API](https://observatorium.io/docs/design/rules-api.md/).
 
 In addition to this, each of the RHOBS instances has an [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) deployed, which makes possible for tenants to configure custom alert routing configuration to route firing alerts to their specified receivers.
 
@@ -19,7 +19,7 @@ For this tutorial we will be using the `rhobs` tenant in the **MST stage environ
 To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated. For this you will need to run [token-refresher](https://github.com/observatorium/token-refresher) - a helper that fetches and refreshes OAuth2 access tokens via OIDC. You can run a local instance of token-refresher:
 
 ```bash
-docker run -v /token-refresher/token/:/etc/token/ --net=host quay.io/observatorium/token-refresher --oidc.client-id=<your-client-id> --oidc.client-secret=<your-client-secret> --oidc.audience=observatorium --url=https://observatorium.api.stage.openshift.com --log.level=debug --oidc.issuer-url=https://sso.redhat.com/auth/realms/redhat-external --file=/etc/token/token
+docker run -p 8080:8080 quay.io/observatorium/token-refresher --oidc.client-id=<your-client-id> --oidc.client-secret=<your-client-secret> --oidc.audience=observatorium --url=https://observatorium.api.stage.openshift.com --log.level=debug --oidc.issuer-url=https://sso.redhat.com/auth/realms/redhat-external
 ```
 
 Where you will need to provide your `--oicd.client-id` and `--oidc.client-secret` credentials. For this tutorial we will be using `https://observatorium.api.stage.openshift.com` as target URL to proxy the requests. All requests will then have the access token in the Authorization HTTP header.
@@ -32,7 +32,7 @@ A tenant can create and list recording and alerting rules via the Observatorium 
 
 If you want to get more details about how to interact with the Rules API and its different endpoints, refer to the [upstream documentation](https://observatorium.io/docs/design/rules-api.md/).
 
-In your local environment, create an alerting rule YAML file with the definition of the alert you want to add. Note that the file should be defined following the [Observatorium OpenAPI specification](https://github.com/observatorium/api/blob/main/rules/spec.yaml). These files should be in Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules format.
+In your local environment, create an alerting rule YAML file with the definition of the alert you want to add. Note that the file should be defined following the [Observatorium OpenAPI specification](https://github.com/observatorium/api/blob/main/rules/spec.yaml). The file should be in Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and/or [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules format.
 
 For example, you can create a file named `alerting-rule.yaml`:
 
@@ -52,7 +52,6 @@ groups:
     for: 1m
     labels:
       severity: page
-      tenant_id: 0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
 ```
 
 Now send a `PUT` request to `/api/v1/rules/raw` endpoint, specifying the YAML file, to **create** your alerting rule using the Rules API:
@@ -67,7 +66,9 @@ Besides checking if you've got a 200 response, you can also list the rules for t
 curl http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules/raw
 ```
 
-#### How to update an alerting rule
+Note that in the response a `tenant_id` label was added. Since Rules/Observatorium API is tenant-aware, this extra validation step is also performed.
+
+### How to update and delete an alerting rule
 
 As mentioned in the [upstream docs](https://observatorium.io/docs/design/rules-api.md/#example-request) that each time a `PUT` request is made to the `/api/v1/rules/raw` endpoint, the rules contained in the request will overwrite all the other rules for that tenant.
 
@@ -91,7 +92,6 @@ groups:
     for: 1m
     labels:
       severity: page
-      tenant_id: 0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
 - interval: 30s
   name: test-new-firing-alert
   rules:
@@ -106,8 +106,10 @@ groups:
     for: 1m
     labels:
       severity: page
-      tenant_id: 0fc2b00e-201b-4c17-b9f2-19d91adc4fd2
 ```
+
+If you want to delete rule(s) for a tenant you can make a `PUT` request to the same `/api/v1/rules/raw` endpoint with an empty body.
+Note that it is currently not possible to delete a specific rule. By making a `PUT` request with an empty body you will be deleting all rules for that tenant.
 
 ### Create a routing configuration in Alertmanager
 
@@ -131,6 +133,44 @@ routes:
 ```
 
 For more information about how to configure Alertmanager, check out the [official Alertmanager documentation](https://prometheus.io/docs/alerting/latest/configuration/).
+
+#### Check the alerting rule state
+
+It is also possible to check all rule groups for a tenant by querying the `/api/v1/rules`. This endpoint returns the processed and evaluated rules from [Thanos Rule](https://thanos.io/tip/components/rule.md/#rule-aka-ruler), which is different than the `/api/v1/rules/raw` endpoint, that returns the unprocessed/raw rules.
+Thanos Ruler evaluates the Prometheus rules - in this case for example, it checks which alerting rules will be triggered, the last time they were evaluated and more.
+
+You can check the `/api/v1/rules` endpoint:
+
+```bash
+curl http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules
+```
+
+For example, if `TestFiringAlert` is already firing, the response will contain a `"state": "firing"` entry for this alert:
+
+```yaml
+"alerts": [
+  {
+    "labels": {
+      "alertname": "TestFiringAlert",
+      "severity": "page",
+      "tenant_id": "0fc2b00e-201b-4c17-b9f2-19d91adc4fd2"
+    },
+    "annotations": {
+      "dashboard": "https://grafana.stage.devshift.net/d/Tg-mH0rizaSJDKSADX/api?orgId=1&refresh=1m",
+      "description": "Test firing alert",
+      "message": "Message of firing alert here",
+      "runbook": "https://github.com/rhobs/configuration/blob/main/docs/sop/observatorium.md",
+      "summary": "Summary of firing alert here"
+    },
+    "state": "firing",
+    "activeAt": "2022-03-02T10:13:39.051462148Z",
+    "value": "1e+00",
+    "partialResponseStrategy": "ABORT"
+  }
+],
+```
+
+If the alert has already the `"state": "firing"` entry, with the Alertmanager having the routing configuration for a specific receiver (in our case, slack), it should be possible to see the alert showing up on slack, in the configured slack channel.
 
 #### Configure secrets in Vault
 
