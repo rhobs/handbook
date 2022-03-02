@@ -108,8 +108,7 @@ groups:
       severity: page
 ```
 
-If you want to delete rule(s) for a tenant you can make a `PUT` request to the same `/api/v1/rules/raw` endpoint with an empty body.
-Note that it is currently not possible to delete a specific rule. By making a `PUT` request with an empty body you will be deleting all rules for that tenant.
+If you want to delete rule(s) for a tenant you can make a `PUT` request to the same `/api/v1/rules/raw` endpoint with an empty body. Note that it is currently not possible to delete a specific rule. By making a `PUT` request with an empty body you will be deleting all rules for that tenant.
 
 ### Create a routing configuration in Alertmanager
 
@@ -136,7 +135,10 @@ For more information about how to configure Alertmanager, check out the [officia
 
 #### Check the alerting rule state
 
-It is also possible to check all rule groups for a tenant by querying the `/api/v1/rules`. This endpoint returns the processed and evaluated rules from [Thanos Rule](https://thanos.io/tip/components/rule.md/#rule-aka-ruler), which is different than the `/api/v1/rules/raw` endpoint, that returns the unprocessed/raw rules.
+It is also possible to check all rule groups for a tenant by querying `/api/v1/rules`. This endpoint returns the processed and evaluated rules from [Thanos Rule](https://thanos.io/tip/components/rule.md/#rule-aka-ruler), which is different than the `/api/v1/rules/raw` endpoint, that returns the unprocessed/raw rules.
+
+`/api/v1/rules` supports only `GET` requests and proxies to the upstream read endpoint (in this case, [Thanos Querier](https://thanos.io/tip/components/query.md/)).
+
 Thanos Ruler evaluates the Prometheus rules - in this case for example, it checks which alerting rules will be triggered, the last time they were evaluated and more.
 
 You can check the `/api/v1/rules` endpoint:
