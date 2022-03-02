@@ -149,7 +149,7 @@ curl http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules
 
 For example, if `TestFiringAlert` is already firing, the response will contain a `"state": "firing"` entry for this alert:
 
-```yaml
+```json
 "alerts": [
   {
     "labels": {
