@@ -176,7 +176,7 @@ If the alert has already the `"state": "firing"` entry, with the Alertmanager ha
 
 #### Configure secrets in Vault
 
-In case you want to configure a receiver (e.g. slack, pagerduty) to receive alert notifications, it is likely necessary that you'd need to provide secrets so that Alertmanager has push access to. Currently, we recommend that you store the desired secrets in `Vault` and embed them via app-sre templating. Refer to https://vault.devshift.net/ui/vault/ to create a new secret or to retrieve an existing one. You can them embed this secret in your Alertmanager configuration file using the following syntax:
+In case you want to configure a receiver (e.g. slack, pagerduty) to receive alert notifications, it is likely necessary that you'd need to provide secrets so that Alertmanager has push access to. Currently, you have to store the desired secrets in `Vault` and embed them via app-sre templating. Refer to https://vault.devshift.net/ui/vault/ to create a new secret or to retrieve an existing one. You can them embed this secret in your Alertmanager configuration file using the following syntax:
 
 ```yaml
 {{{ vault('app-sre/integrations-input/alertmanager-integration', 'slack_api_url') }}}
