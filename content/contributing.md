@@ -12,7 +12,7 @@ If the handbook inspired you, let us know too!
 
 ## What and How You Can Contribute?
 
-Follow [Modifying Documents Guide](#modifying-documents) and add GitHub Pull Request to https://github.com/rhobs/handbook:
+Follow [Modifying Documents Guide](#modifying-documents) and add GitHub Pull Request to [https://github.com/rhobs/handbook](https://github.com/rhobs/handbook):
 
 * If you find a broken link, typo, unclear statements, gap in the documentation.
 * If you find a broken element on `https://rhobs-handbook.netlify.app/` website or via [GitHub UI](https://github.com/rhobs/handbook/tree/main/content).
