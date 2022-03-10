@@ -29,11 +29,12 @@ The Openshift Monitoring Team began preparing for this shift in 2018 with the [T
 
 In Summer 2020, the Monitoring Team together with the OpenShift Logging Team added a logging signal to [“Observatorium”](../../Projects/Observability/observatorium.md) and started to manage it for internal teams as the RHOBS.
 
-### Status
+### Current Usage
 
 RHOBS is running in production and has already been offered to various internal teams, with more extensions and expansions coming in the near future.
 
-*There is currently no plan to offer RHOBS to external customers.* However anyone is welcome to deploy and manage an RHOBS-like-service on their own using [Observatorium](../../Projects/Observability/observatorium.md).
+* There is currently no plan to offer RHOBS to external customers.
+* However anyone is welcome to deploy and manage an RHOBS-like-service on their own using [Observatorium](../../Projects/Observability/observatorium.md).
 
 Usage (state as of 2021.07.01):
 
@@ -62,6 +63,31 @@ Other signals are managed by others team (each together with AppSRE help):
 * Tracing signal: OpenShift Tracing Team
 
 Telemeter part client side is maintained by In-cluster Monitoring team, but managed by corresponding client cluster owner.
+
+### Metric Label Restrictions
+
+There is small set of reserved label name that are reserved on RHOBS side. If remote write request contains series with those labels, they will be overridden (not honoured).
+
+Restricted labels:
+
+* `tenant_id`: Internal tenant ID in form of UUID that is injected to all series in various placed and constructed from tenant authorization (HTTP header).
+* `receive`: Special label used internally.
+* `replica` and `rule_replica`: Special label used internally to replicate receive and rule data for reliability.
+
+Special labels:
+
+* `prometheus_replica`: Use this label for Agent/Prometheus unique scraper ID if you scrape and push from multiple of replicas scraping the same data. RHOBS is configured to deduplicate metrics based on this.
+
+Recommended labels:
+
+* `_id` for cluster ID (in form of lowercase UUID) is the common way of identifying clusters.
+* `prometheus` is a name of Prometheus (or any other scraper) that was used to collect metrics.
+* `job` is scrape job name that is usually dynamically set to abstracted service name representing microservice (usually deployment/statefulset name)
+* `namespace` is Kubernetes namespace. Useful to make sure identify same microservices across namespaces.
+* For more "version" based granularit (warning - every pod rollout creates new time series).
+  * `pod` is a pod name
+  * `instance` is an IP:port (useful when pod has sidecars)
+  * `image` is image name and tag.
 
 ### Support
 
