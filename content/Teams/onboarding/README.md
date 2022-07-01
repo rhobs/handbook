@@ -91,8 +91,9 @@ Advocating about sane monitoring and alerting practices (especially focused on K
    * (Requires to have a JIRA account set up already - see below)
    * Note: full name of the team: OpenShift Monitoring
 10. Request access to the [rhobs](https://github.com/rhobs) organization by asking in #[team-monitoring](https://coreos.slack.com/archives/G79AW9Q7R/p1621409351049200) slack
-11. Request to be added to the [team-monitoring github team](https://github.com/orgs/openshift/teams/openshift-team-monitoring/members) by creating a Jira ticket to DPP the team. Don't use GitHubs request option for that because it needs to be tracked internally.
-    * Note that this would only work after you are added to the Openshift Github organization
+11. Request to be added to the [team-monitoring github team](https://github.com/orgs/openshift/teams/openshift-team-monitoring/members) by creating a Jira ticket to the [OpenShift's Developer Productivity Platform team (DPP)](https://source.redhat.com/groups/public/atomicopenshift/atomicopenshift_wiki/dev_productivity_platform_team_home). Don't use GitHub's request option for that because it needs to be tracked internally.
+    * Note that this would only work after you are added to the Openshift Github organization.
+    * The ticket cannot be open directly in https://issues.redhat.com, instead under the VPN go to https://devservices.dpp.openshift.com/support -> Github -> "Something else? Create a general Github question/request ticket and indicate your Github username. That creates a ticket that is printed at the end of the process.
     * Example ticket [here](https://issues.redhat.com/browse/DPP-8352)
 12. Ensure your manager adds you to the [team PTO calendar](https://calendar.google.com/calendar/u/0?cid=cmVkaGF0LmNvbV91N3YwbGt2cnRuM2wwbWJmMnF2M2VkMm12MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t) and that you can access it.
 13. Bookmark our team’s [Google Drive Folder](https://drive.google.com/drive/folders/1PJHtAtxBUHxbmMx1xftrNSOJEIoYVhyO)
