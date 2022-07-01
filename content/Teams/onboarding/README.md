@@ -77,7 +77,7 @@ Advocating about sane monitoring and alerting practices (especially focused on K
 7. Join the following communication channels:
    1. [Setup slack using this guide](https://source.redhat.com/groups/public/atomicopenshift/atomicopenshift_wiki/openshift_slack#jive_content_id_Quickstart)
    2. Ask your manager or another team member to add you to the private **[#team-monitoring](https://coreos.slack.com/archives/G79AW9Q7R/p1621409351049200)** and **[#observability-team](https://coreos.slack.com/archives/C02BY4191B6)** channels.
-   3. Ask your manager or team lead to add you to the @monitoring-team alias in slack.
+   3. Ask your manager or team lead to add you to the @monitoring-team alias in slack. You can also add yourself in Slack in "More" -> "People & user groups" -> "User groups" searching for "@monitoring-team" and then going to "Edit Members".
    4. Join the public channels:
       * **[#forum-monitoring](https://coreos.slack.com/archives/C0VMT03S5)**
       * **[#forum-telemetry](https://coreos.slack.com/archives/CEG5ZJQ1G)**
