@@ -64,7 +64,7 @@ These are the people you’ll be in most contact with when working upstream. If 
 
 ## Talks
 
-Advocating about sane monitoring and alerting practices (especially focused on Kubernetes environments) and how Prometheus implements them is part of our team’s work. That can happen internally or on public channels. If you are comfortable giving talks on the topic or some specific work we have done, let us know so we can plan ahead to find you a speaking opportunity at meetups or conferences. If you are not comfortable, but want to break this barrier let us know as well, we can help you get more comfortable in public speaking slowly step by step. If you want to submit a CFP for a talk please add it to this [spreadsheet](https://docs.google.com/spreadsheets/d/1eo_JVND3k4ZnL25kgnhITSE2DBkyw8fwg3MyCXMjdYU/edit#gid=1880565406) and inform your manager. and inform your manager.
+Advocating about sane monitoring and alerting practices (especially focused on Kubernetes environments) and how Prometheus implements them is part of our team’s work. That can happen internally or on public channels. If you are comfortable giving talks on the topic or some specific work we have done, let us know so we can plan ahead to find you a speaking opportunity at meetups or conferences. If you are not comfortable, but want to break this barrier let us know as well, we can help you get more comfortable in public speaking slowly step by step. If you want to submit a CFP for a talk please add it to this [spreadsheet](https://docs.google.com/spreadsheets/d/1eo_JVND3k4ZnL25kgnhITSE2DBkyw8fwg3MyCXMjdYU/edit#gid=1880565406) and inform your manager.
 
 ## First days (accounts & access)
 
