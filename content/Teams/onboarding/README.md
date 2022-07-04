@@ -71,8 +71,8 @@ Advocating about sane monitoring and alerting practices (especially focused on K
 1. Meet with your manager to get your temporary access token.
 2. Follow the instructions you received to get your SSO access setup. This will enable you to access the VPN, your Red Hat email etc. Be sure to setup 2-Factor Auth using the Google Authenticator app or similar as described in the instructions provided by IT.
 3. Ensure you are added to the **team-monitoring@redhat.com mailing list.** mailing list (request to be added by Assaf Muller)
-4. Join the observability-announce mailing list ([https://groups.google.com/a/redhat.com/g/observability-announce](https://groups.google.com/a/redhat.com/g/observability-announce))
-5. Join the **aos-devel@redhat.com **mailing list [https://post-office.corp.redhat.com/mailman/listinfo](https://post-office.corp.redhat.com/mailman/listinfo) (requires VPN)
+4. Join the [**observability-announce mailing list**](https://groups.google.com/a/redhat.com/g/observability-announce)
+5. Join the [**aos-devel@redhat.com mailing list**](https://groups.google.com/a/redhat.com/g/aos-devel)
 6. Get in touch with your mentor ([mentors are tracked here](https://docs.google.com/spreadsheets/d/1SpdBbZChBNuPHVtbCjOch1mfZGUuCjkrp7yyCClL9kk/edit#gid=0))
 7. Join the following communication channels:
    1. [Setup slack using this guide](https://source.redhat.com/groups/public/atomicopenshift/atomicopenshift_wiki/openshift_slack#jive_content_id_Quickstart)
