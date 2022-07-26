@@ -32,10 +32,10 @@ You can get up and running quickly with the following steps,
   obsctl context api add --name='staging-api' --url='https://observatorium-mst.api.stage.openshift.com'
   ```
 
-* Save credentials for a tenant under the API you just added (you will need your own OIDC Client ID and Client Secret),
+* Save credentials for a tenant under the API you just added (you will need your own OIDC Client ID, Client Secret & TENANT),
 
   ```bash
-  obsctl login --api='staging-api' --oidc.audience='observatorium' --oidc.client-id='<CLIENT_ID>' --oidc.client-secret='<SECRET>' --oidc.issuer-url='https://sso.redhat.com/auth/realms/redhat-external' --tenant='rhobs'
+  obsctl login --api='staging-api' --oidc.audience='observatorium' --oidc.client-id='<CLIENT_ID>' --oidc.client-secret='<SECRET>' --oidc.issuer-url='https://sso.redhat.com/auth/realms/redhat-external' --tenant='<TENANT>'
   ```
 
 * Verify that you are using the correct API + tenant combination or "context" (in this case it would be `staging-api/rhobs`),
@@ -54,7 +54,7 @@ A tenant can create and list recording and alerting rules via the Observatorium 
 
 If you want to get more details about how to interact with the Rules API and its different endpoints, refer to the upstream [documentation](https://observatorium.io/docs/design/rules-api.md/) or [OpenAPI spec](https://observatorium.io/docs/api).
 
-In your local environment, create an Prometheus alerting rule YAML file with the definition of the alert you want to add. Note that the file should be defined following the [Observatorium OpenAPI specification](https://github.com/observatorium/api/blob/main/rules/spec.yaml). The file should be in Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and/or [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules format.
+In your local environment, create a Prometheus alerting rule YAML file with the definition of the alert you want to add. Note that the file should be defined following the [Observatorium OpenAPI specification](https://github.com/observatorium/api/blob/main/rules/spec.yaml). The file should be in Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and/or [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules format.
 
 For example, you can create a file named `alerting-rule.yaml`:
 
@@ -182,7 +182,7 @@ It is possible to check all rule groups for a tenant by querying `/api/v1/rules`
 This endpoint returns the processed and evaluated rules from Observatorium's [Thanos Rule](https://thanos.io/tip/components/rule.md/#rule-aka-ruler) in [Prometheus HTTP API format JSON](https://prometheus.io/docs/prometheus/latest/querying/api/#rules).
 
 It is different from `api/v1/rules/raw` endpoint (which can be queried by running `obsctl metrics get rules.raw`) in a few ways,
-* `api/v1/rules/raw` only returns the unprocess/raw rule file YAML that was configured whereas `api/v1/rules` returns processed JSON rules with health and alert data.
+* `api/v1/rules/raw` only returns the unprocessed/raw rule file YAML that was configured whereas `api/v1/rules` returns processed JSON rules with health and alert data.
 * `api/v1/rules/raw` immediately reflects changes to rules, whereas `api/v1/rules` can take up to a minute to sync with new changes.
 
 Thanos Ruler evaluates the Prometheus rules - in this case for example, it checks which alerting rules will be triggered, the last time they were evaluated and more.
