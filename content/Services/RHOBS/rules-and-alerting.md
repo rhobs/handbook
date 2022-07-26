@@ -4,7 +4,7 @@
 
 As explained in more details [here](README.md), RHOBS features a deployment of [Observatorium](../../Projects/Observability/observatorium.md).
 
-Through the Observatorium API, tenants are able to **write**, **read** and **delete** their own Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules via the [Observatorium Rules API](https://observatorium.io/docs/design/rules-api.md/).
+Through the Observatorium API, tenants are able to **create**, **read**, **update** and **delete** their own Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules via the [Observatorium Rules API](https://observatorium.io/docs/design/rules-api.md/).
 
 In addition to this, each of the RHOBS instances has an [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) deployed, which makes possible for tenants to configure custom alert routing configuration to route firing alerts to their specified receivers.
 
@@ -16,23 +16,45 @@ For this tutorial we will be using the `rhobs` tenant in the **MST stage environ
 
 ### Authenticate against the Observatorium API
 
-To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated. For this you will need to run [token-refresher](https://github.com/observatorium/token-refresher) - a helper that fetches and refreshes OAuth2 access tokens via OIDC. You can run a local instance of token-refresher:
+To have access to the [Observatorium API](https://github.com/observatorium/api), the tenant making the requests needs to be correctly authenticated. For this you can install [obsctl](https://github.com/observatorium/obsctl) which is a dedicated CLI tool to interact with Observatorium instances as tenants. It uses the provided credentials to fetch OAuth2 access tokens via OIDC and saves both the token and credentials for multiple tenants and APIs, locally.
 
-```bash
-docker run -p 8080:8080 quay.io/observatorium/token-refresher --oidc.client-id=<your-client-id> --oidc.client-secret=<your-client-secret> --oidc.audience=observatorium --url=https://observatorium.api.stage.openshift.com --log.level=debug --oidc.issuer-url=https://sso.redhat.com/auth/realms/redhat-external
-```
+You can get up and running quickly with the following steps,
 
-Where you will need to provide your `--oicd.client-id` and `--oidc.client-secret` credentials. For this tutorial we will be using `https://observatorium.api.stage.openshift.com` as target URL to proxy the requests. All requests will then have the access token in the Authorization HTTP header.
+* Make sure you have Go 1.17+ on your system and install obsctl,
 
-Now that we have set up token-refresher, let's start creating an alerting rule.
+  ```bash
+  go install github.com/observatorium/obsctl@latest
+  ```
+
+* Add your desired Observatorium API,
+
+  ```bash
+  obsctl context api add --name='staging-api' --url='https://observatorium-mst.api.stage.openshift.com'
+  ```
+
+* Save credentials for a tenant under the API you just added (you will need your own OIDC Client ID, Client Secret & TENANT),
+
+  ```bash
+  obsctl login --api='staging-api' --oidc.audience='observatorium' --oidc.client-id='<CLIENT_ID>' --oidc.client-secret='<SECRET>' --oidc.issuer-url='https://sso.redhat.com/auth/realms/redhat-external' --tenant='<TENANT>'
+  ```
+
+* Verify that you are using the correct API + tenant combination or "context" (in this case it would be `staging-api/rhobs`),
+
+  ```bash
+  obsctl context current
+  ```
+
+For this tutorial we will be using `https://observatorium-mst.api.stage.openshift.com` as our target Observatorium API.
+
+Now that we have set up obsctl, let's start creating an alerting rule.
 
 ### Create an alerting rule
 
 A tenant can create and list recording and alerting rules via the Observatorium Rules API. For this tutorial we will be creating an alerting rule, to also make use of the alerting capabilities that are available in Observatorium.
 
-If you want to get more details about how to interact with the Rules API and its different endpoints, refer to the [upstream documentation](https://observatorium.io/docs/design/rules-api.md/).
+If you want to get more details about how to interact with the Rules API and its different endpoints, refer to the upstream [documentation](https://observatorium.io/docs/design/rules-api.md/) or [OpenAPI spec](https://observatorium.io/docs/api).
 
-In your local environment, create an alerting rule YAML file with the definition of the alert you want to add. Note that the file should be defined following the [Observatorium OpenAPI specification](https://github.com/observatorium/api/blob/main/rules/spec.yaml). The file should be in Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and/or [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules format.
+In your local environment, create a Prometheus alerting rule YAML file with the definition of the alert you want to add. Note that the file should be defined following the [Observatorium OpenAPI specification](https://github.com/observatorium/api/blob/main/rules/spec.yaml). The file should be in Prometheus [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and/or [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) rules format.
 
 For example, you can create a file named `alerting-rule.yaml`:
 
@@ -54,27 +76,43 @@ groups:
       severity: page
 ```
 
-Now send a `PUT` request to `/api/v1/rules/raw` endpoint, specifying the YAML file, to **create** your alerting rule using the Rules API:
+Now to set this rule file, you can use obsctl,
 
 ```bash
-curl -X PUT --data-binary @alerting-rule.yaml --header "Content-Type: application/yaml" http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules/raw
+obsctl metrics set --rule.file=/path/to/alerting-rule.yaml
 ```
 
-Besides checking if you've got a 200 response, you can also list the rules for the tenant (in this case, `rhobs`):
+obsctl uses the credentials you saved earlier, to make an authenticated `application/yaml` `PUT` request to the `api/v1/rules/raw` endpoint of the Observatorium API, which **creates** your alerting rule.
+
+obsctl should print out the response, which, if successful, would be: `successfully updated rules file`.
+
+Besides checking this response, you can also list or **read** the configured rules for your tenant by,
 
 ```bash
-curl http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules/raw
+obsctl metrics get rules.raw
 ```
 
-Note that in the response a `tenant_id` label for the particular tenant was added automatically. Since Rules/Observatorium API is tenant-aware, this extra validation step is also performed. Also, in the case of Rules expressions, the `tenant_id` labels are injected into the PromQL query, which ensures that only data from a specific tenant is selected during evaluation.
+This would make a `GET` request to `api/v1/rules/raw` endpoint and return the rules you configured in YAML form. This endpoint will immediately reflect any newly set rules.
+
+Note that in the response a `tenant_id` label for the particular tenant was added automatically. Since Observatorium API is tenant-aware, this extra validation step is also performed. Also, in the case of rules expressions, the `tenant_id` labels are injected into the PromQL query, which ensures that only data from a specific tenant is selected during evaluation.
+
+You can also check your rule's configuration, health, and resultant alerts by,
+
+```bash
+obsctl metrics get rules
+```
+
+This would make a `GET` request to `api/v1/rules` endpoint, and return rules you configured in [Prometheus HTTP API format JSON response](https://prometheus.io/docs/prometheus/latest/querying/api/#rules). You can read more about checking rule state [here](#check-the-alerting-rule-state).
+
+Note that this endpoint does not reflect newly set rules immediately and might take up to a minute to sync.
 
 ### How to update and delete an alerting rule
 
-As mentioned in the [upstream docs](https://observatorium.io/docs/design/rules-api.md/#example-request) that each time a `PUT` request is made to the `/api/v1/rules/raw` endpoint, the rules contained in the request will overwrite all the other rules for that tenant.
+As mentioned in the [upstream docs](https://observatorium.io/docs/design/rules-api.md/#example-request) that each time a `PUT` request is made to the `/api/v1/rules/raw` endpoint, the rules contained in the request will overwrite all the other rules for that tenant. Thus, each time you use `obsctl metrics set --rule.file=<file>` it will overwrite all other rules for a tenant with the new rule file.
 
-Make sure to grab your existing raw rules and append to that the new rules you want to create.
+Make sure to grab your existing rules YAML file and append any new rules or groups you want to create, to this file.
 
-Using the example above, in case we want to create a second alerting rule, a new `alert` should be added to the file:
+Using the example above, in case you want to create a second alerting rule, a new `alert` rule should be added to the file,
 
 ```yaml
 groups:
@@ -108,7 +146,11 @@ groups:
       severity: page
 ```
 
-If you want to delete rule(s) for a tenant you can make a `PUT` request to the same `/api/v1/rules/raw` endpoint with an empty body. Note that it is currently not possible to delete a specific rule. By making a `PUT` request with an empty body you will be deleting all rules for that tenant.
+And then this new file can be set via `obsctl metrics set --rule.file=/path/to/alerting-rule.yaml` to **update** your rules configuration.
+
+Similarly, if you want to **delete** a rule, you can remove that from your existing rule file, before setting it with obsctl.
+
+If you want to **delete** all rule(s) for a tenant, you can run `obsctl metrics set --rule.file=` with an empty file.
 
 ### Create a routing configuration in Alertmanager
 
@@ -135,17 +177,15 @@ For more information about how to configure Alertmanager, check out the [officia
 
 #### Check the alerting rule state
 
-It is also possible to check all rule groups for a tenant by querying `/api/v1/rules`. This endpoint returns the processed and evaluated rules from [Thanos Rule](https://thanos.io/tip/components/rule.md/#rule-aka-ruler), which is different than the `/api/v1/rules/raw` endpoint, that returns the unprocessed/raw rules.
+It is possible to check all rule groups for a tenant by querying `/api/v1/rules` endpoint (i.e by running `obsctl metrics get rules`). `/api/v1/rules` supports only `GET` requests and proxies to the upstream read endpoint (in this case, [Thanos Querier](https://thanos.io/tip/components/query.md/)).
 
-`/api/v1/rules` supports only `GET` requests and proxies to the upstream read endpoint (in this case, [Thanos Querier](https://thanos.io/tip/components/query.md/)).
+This endpoint returns the processed and evaluated rules from Observatorium's [Thanos Rule](https://thanos.io/tip/components/rule.md/#rule-aka-ruler) in [Prometheus HTTP API format JSON](https://prometheus.io/docs/prometheus/latest/querying/api/#rules).
+
+It is different from `api/v1/rules/raw` endpoint (which can be queried by running `obsctl metrics get rules.raw`) in a few ways,
+* `api/v1/rules/raw` only returns the unprocessed/raw rule file YAML that was configured whereas `api/v1/rules` returns processed JSON rules with health and alert data.
+* `api/v1/rules/raw` immediately reflects changes to rules, whereas `api/v1/rules` can take up to a minute to sync with new changes.
 
 Thanos Ruler evaluates the Prometheus rules - in this case for example, it checks which alerting rules will be triggered, the last time they were evaluated and more.
-
-You can check the `/api/v1/rules` endpoint:
-
-```bash
-curl http://localhost:8080/api/metrics/v1/rhobs/api/v1/rules
-```
 
 For example, if `TestFiringAlert` is already firing, the response will contain a `"state": "firing"` entry for this alert:
 
