@@ -47,37 +47,37 @@ We work on all important aspects of the upstream eco-system and a seamless monit
 
 ## People relevant to Prometheus who you should know about:
 
-- Julius Volz (@juliusv): Previously worked at Soundcloud where he developed prometheus. Now working as an independent contractor and organizing [PromCon](http://promcon.io/) (Prometheus community conference). He also worked with weave.works on a prototype for remote/long-term time series storage, with Influxdb on Flux PromQL support. Contributed new Prometheus UI in React. He also created a new company [PromLens](https://promlens.com/), for a rich PromQL UI.
-- Bjoern Rabenstein (@beorn7): Worked at SoundCloud but now works at Grafana. He's active again upstream and the maintainer of pushgateway and client_golang (the Go client Prometheus library).
-- Frederic Branczyk (@fredbrancz): Joined CoreOS in 2016 to work around Prometheus. Core Team member since then and one of the minds behind our team's vision. Left Red Hat in 2020 to start his new company around continuous profiling (PolarSignals). Still very active in upstream.
-- Julien Pivotto (@roidelapluie): prometheus/prometheus maintainer. Very active in other upstream projects (Alertmanager, …).
+- Julius Volz ([@juliusv](https://github.com/juliusv)): Previously worked at Soundcloud where he developed prometheus. Now working as an independent contractor and organizing [PromCon](http://promcon.io/) (Prometheus community conference). He also worked with weave.works on a prototype for remote/long-term time series storage, with Influxdb on Flux PromQL support. Contributed new Prometheus UI in React. He also created a new company [PromLens](https://promlens.com/), for a rich PromQL UI.
+- Bjoern Rabenstein ([@beorn7](https://github.com/beorn7)): Worked at SoundCloud but now works at Grafana. He's active again upstream and the maintainer of pushgateway and client_golang (the Go client Prometheus library).
+- Frederic Branczyk ([@brancz](https://github.com/brancz)): Joined CoreOS in 2016 to work around Prometheus. Core Team member since then and one of the minds behind our team's vision. Left Red Hat in 2020 to start his new company around continuous profiling (PolarSignals). Still very active in upstream.
+- Julien Pivotto ([@roidelapluie](https://github.com/roidelapluie)): prometheus/prometheus maintainer. Very active in other upstream projects (Alertmanager, …).
 
 ## Thanos
 
 Thanos is a monitoring system, which was created based on Prometheus principles. It is a distributed version of Prometheus where every piece of Prometheus like scraping, querying, storage, recording, alerting, and compaction can be deployed as separate horizontally scalable components. This allows more flexible deployments and capabilities beyond single clusters. Thanos also supports object storage as the main storage option, allowing cheap long term retention for metrics. At the end it exposes the same (yet extended) Prometheus APIs and uses gRPC to communicate between components.
 
-Thanos was created because of the scalability limits of Prometheus in 2017. At that point a similar project Cortex was emerging too, but it was over complex at that time. In November 2017, Fabian Reinartz (@fabxc, consulting for Improbable at that time) and Bartek Plotka (@bwplotka), teamed up to create Thanos based on the Prometheus storage format. Around February 2018 the project was shown at Prometheus Meetup in London, and in Summer 2018 announced on PromCon 2018. In 2019, our team in Red Hat, led at that point by Frederic Branczyk @fredbrancz, contributed essential pieces allowing Thanos to receive remote-write (push model) for Prometheus metrics. Since then, we could leverage Thanos for Telemetry gathering and then in in-cluster Monitoring, too.
+Thanos was created because of the scalability limits of Prometheus in 2017. At that point a similar project Cortex was emerging too, but it was over complex at that time. In November 2017, Fabian Reinartz ([@fabxc](https://github.com/fabxc), consulting for Improbable at that time) and Bartek Plotka ([@bwplotka](https://github.com/bwplotka)), teamed up to create Thanos based on the Prometheus storage format. Around February 2018 the project was shown at Prometheus Meetup in London, and in Summer 2018 announced on PromCon 2018. In 2019, our team in Red Hat, led at that point by Frederic Branczyk [@brancz](https://github.com/brancz), contributed essential pieces allowing Thanos to receive remote-write (push model) for Prometheus metrics. Since then, we could leverage Thanos for Telemetry gathering and then in in-cluster Monitoring, too.
 
-When working with it you will most likely interact with Bartek Plotka (@bwplotka) and other team members.
+When working with it you will most likely interact with Bartek Plotka ([@bwplotka](https://github.com/bwplotka)) and other team members.
 
 These are the people you’ll be in most contact with when working upstream. If you run into any communication issues, please let us know as soon as possible.
 
 ## Talks
 
-Advocating about sane monitoring and alerting practices (especially focused on Kubernetes environments) and how Prometheus implements them is part of our team’s work. That can happen internally or on public channels. If you are comfortable giving talks on the topic or some specific work we have done, let us know so we can plan ahead to find you a speaking opportunity at meetups or conferences. If you are not comfortable, but want to break this barrier let us know as well, we can help you get more comfortable in public speaking slowly step by step. If you want to submit a CFP for a talk please add it to this [spreadsheet](https://docs.google.com/spreadsheets/d/1eo_JVND3k4ZnL25kgnhITSE2DBkyw8fwg3MyCXMjdYU/edit#gid=1880565406) and inform your manager. and inform your manager.
+Advocating about sane monitoring and alerting practices (especially focused on Kubernetes environments) and how Prometheus implements them is part of our team’s work. That can happen internally or on public channels. If you are comfortable giving talks on the topic or some specific work we have done, let us know so we can plan ahead to find you a speaking opportunity at meetups or conferences. If you are not comfortable, but want to break this barrier let us know as well, we can help you get more comfortable in public speaking slowly step by step. If you want to submit a CFP for a talk please add it to this [spreadsheet](https://docs.google.com/spreadsheets/d/1eo_JVND3k4ZnL25kgnhITSE2DBkyw8fwg3MyCXMjdYU/edit#gid=1880565406) and inform your manager.
 
 ## First days (accounts & access)
 
 1. Meet with your manager to get your temporary access token.
 2. Follow the instructions you received to get your SSO access setup. This will enable you to access the VPN, your Red Hat email etc. Be sure to setup 2-Factor Auth using the Google Authenticator app or similar as described in the instructions provided by IT.
 3. Ensure you are added to the **team-monitoring@redhat.com mailing list.** mailing list (request to be added by Assaf Muller)
-4. Join the observability-announce mailing list ([https://groups.google.com/a/redhat.com/g/observability-announce](https://groups.google.com/a/redhat.com/g/observability-announce))
-5. Join the **aos-devel@redhat.com **mailing list [https://post-office.corp.redhat.com/mailman/listinfo](https://post-office.corp.redhat.com/mailman/listinfo) (requires VPN)
+4. Join the [**observability-announce mailing list**](https://groups.google.com/a/redhat.com/g/observability-announce)
+5. Join the [**aos-devel@redhat.com mailing list**](https://groups.google.com/a/redhat.com/g/aos-devel)
 6. Get in touch with your mentor ([mentors are tracked here](https://docs.google.com/spreadsheets/d/1SpdBbZChBNuPHVtbCjOch1mfZGUuCjkrp7yyCClL9kk/edit#gid=0))
 7. Join the following communication channels:
    1. [Setup slack using this guide](https://source.redhat.com/groups/public/atomicopenshift/atomicopenshift_wiki/openshift_slack#jive_content_id_Quickstart)
    2. Ask your manager or another team member to add you to the private **[#team-monitoring](https://coreos.slack.com/archives/G79AW9Q7R/p1621409351049200)** and **[#observability-team](https://coreos.slack.com/archives/C02BY4191B6)** channels.
-   3. Ask your manager or team lead to add you to the @monitoring-team alias in slack.
+   3. Ask your manager or team lead to add you to the @monitoring-team alias in slack. You can also add yourself in Slack in "More" -> "People & user groups" -> "User groups" searching for "@monitoring-team" and then going to "Edit Members".
    4. Join the public channels:
       * **[#forum-monitoring](https://coreos.slack.com/archives/C0VMT03S5)**
       * **[#forum-telemetry](https://coreos.slack.com/archives/CEG5ZJQ1G)**
@@ -91,8 +91,9 @@ Advocating about sane monitoring and alerting practices (especially focused on K
    * (Requires to have a JIRA account set up already - see below)
    * Note: full name of the team: OpenShift Monitoring
 10. Request access to the [rhobs](https://github.com/rhobs) organization by asking in #[team-monitoring](https://coreos.slack.com/archives/G79AW9Q7R/p1621409351049200) slack
-11. Request to be added to the [team-monitoring github team](https://github.com/orgs/openshift/teams/openshift-team-monitoring/members) by creating a Jira ticket to DPP the team. Don't use GitHubs request option for that because it needs to be tracked internally.
-    * Note that this would only work after you are added to the Openshift Github organization
+11. Request to be added to the [team-monitoring github team](https://github.com/orgs/openshift/teams/openshift-team-monitoring/members) by creating a Jira ticket to the [OpenShift's Developer Productivity Platform team (DPP)](https://source.redhat.com/groups/public/atomicopenshift/atomicopenshift_wiki/dev_productivity_platform_team_home). Don't use GitHub's request option for that because it needs to be tracked internally.
+    * Note that this would only work after you are added to the Openshift Github organization.
+    * The ticket cannot be open directly in https://issues.redhat.com, instead under the VPN go to https://devservices.dpp.openshift.com/support -> Github -> "Something else? Create a general Github question/request ticket" and indicate your Github username. That creates a ticket that is printed at the end of the process.
     * Example ticket [here](https://issues.redhat.com/browse/DPP-8352)
 12. Ensure your manager adds you to the [team PTO calendar](https://calendar.google.com/calendar/u/0?cid=cmVkaGF0LmNvbV91N3YwbGt2cnRuM2wwbWJmMnF2M2VkMm12MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t) and that you can access it.
 13. Bookmark our team’s [Google Drive Folder](https://drive.google.com/drive/folders/1PJHtAtxBUHxbmMx1xftrNSOJEIoYVhyO)
