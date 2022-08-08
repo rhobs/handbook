@@ -1,6 +1,8 @@
-# MST
+# RHOBS
 
 > For RHOBS Overview see [this document](README.md)
+
+RHOBS is a core service that was previously referred to `MST` instance. It distinguishes the deployment and SLA to [Telemeter Service](./telemetry.md).
 
 TBD(https://github.com/rhobs/handbook/issues/23)
 
