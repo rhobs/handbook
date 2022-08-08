@@ -135,7 +135,7 @@ There are several ways to create an OpenShift cluster or to use an existing one.
 ### Administrative things
 
 1. Review all the onboarding instructions/documentation sent to your email by the People Team (HR).
-2. Submit an[Employee Badge Request Form](https://redhat.service-now.com/rh_ess/cat_item.do?&sysparm_document_key=sc_cat_item,ac8bb875a82282004c7185ae62325874)
+2. Submit an[Employee Badge Request Form](https://url.corp.redhat.com/badge-request)
 3. Register for new hire orientation NHO (you will get an email about this from HR)
 4. Speak with your manager about any additional equipment you need (e.g. keyboard, mouse, etc)
 5. Login to Rover (our company directory) and update your profile [https://rover.redhat.com/people/profile/](https://rover.redhat.com/people/profile/). Be sure to do the following:
