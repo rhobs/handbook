@@ -10,11 +10,11 @@
 
 Red Hat Observability Service (RHOBS) is a managed, centralized, multi-tenant, scalable backend for observability data. Functionally it is an internal deployment of [Observatorium](../../Projects/Observability/observatorium.md) project. RHOBS is designed to allow ingesting, storing and consuming (visualisations, import, alerting, correlation) observability signals like metrics, logging and tracing.
 
-This document provides the basic overview of the RHOBS service. If you want to learn about RHOBS architecture, check the [Design document](./design.md).
+This document provides the basic overview of the RHOBS service. If you want to learn about RHOBS architecture, check the [Design document](design.md).
 
 ### Background
 
-With the amount of managed Openshift clusters, for Red Hat’s own use as well as for customers, there is a strong need to take the observability of those clusters and of their workloads to the multi-cluster level. 
+With the amount of managed Openshift clusters, for Red Hat’s own use as well as for customers, there is a strong need to take the observability of those clusters and of their workloads to the multi-cluster level.
 
 Particularly the reasons can be formulated as follows:
 
@@ -35,7 +35,7 @@ In Summer 2020, the Monitoring Team together with the OpenShift Logging Team add
 
 RHOBS is running in production and has already been offered to various internal teams, with more extensions and expansions coming in the near future.
 
-There is currently no plan to offer RHOBS to external customers, however anyone is welcome to deploy and manage an RHOBS-like-service on their own using [Observatorium](../../Projects/Observability/observatorium.md). This project is used by RHOBS as the regional instances. More on that in the [design overview](./design.md) 
+There is currently no plan to offer RHOBS to external customers, however anyone is welcome to deploy and manage an RHOBS-like-service on their own using [Observatorium](../../Projects/Observability/observatorium.md). This project is used by RHOBS as the regional instances. More on that in the [design overview](design.md)
 
 ### Owners
 
