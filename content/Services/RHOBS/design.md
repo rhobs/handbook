@@ -2,13 +2,13 @@
 
 ## Introduction
 
-This document presents the general design of [the RHOBS service](README.md). Generally, the RHOBS is a managed service running [Observatorium](http://observatorium.io/) project for the Red Hat needs. The high-level overview of the single cluster Observatorium can be seen below:
+This document presents the general design of [the RHOBS service](README.md). Generally, the RHOBS is a managed service running the [Observatorium](http://observatorium.io/) project for Red Hat needs. The high-level overview of the single cluster Observatorium can be seen below:
 
 ![img.png](../../assets/observatorium.png)
 
 Observatorium is a set of Jsonnet configuration pieces that deploy popular open-source observability backends for each signal (metric, logs and tracing) as needed. It also provides a separate API service that handles Saas-specific duties like tenancy, rate-limiting, authorization and authentication, etc.
 
-It supports [Prometheus](https://prometheus.io/) (metric) APIs thanks to [Thanos](https://thanos.io/) open source project. Logging is provided with [Loki](https://github.com/grafana/loki) APIs and backend. Tracing with (not implemented yet) with [OpenTelemetry OTLP](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/protocol/otlp.md) API for writes, [Jaeger](https://www.jaegertracing.io/) API for reads and [Tempo](https://github.com/grafana/tempo) as a backend.
+It supports [Prometheus](https://prometheus.io/) (metric) APIs thanks to the [Thanos](https://thanos.io/) open source project. Logging is provided with [Loki](https://github.com/grafana/loki) APIs and backend. Tracing (not implemented yet) with [OpenTelemetry OTLP](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/protocol/otlp.md) API for writes, [Jaeger](https://www.jaegertracing.io/) API for reads and [Tempo](https://github.com/grafana/tempo) as a backend.
 
 Those sub-projects were chosen because of their similar architecture, scalability patterns and open source practices. The key fact is that they all use object storage as the primary data store, which allows cheap long-term retention of the (mostly) immutable observability data.
 
@@ -33,7 +33,7 @@ Legend:
 * Green arrow: Metric / Rules / Alerts Read API traffic.
 * Black lines: Backbone communication (e.g. with object storage or authZ/authN with SSO).
 
-The RHOBs design is based on multiple shards that represent isolated [RHOBS-specific Observatorium](https://github.com/rhobs/configuration) installations. Shards are currently deployed to two clusters, but the design is prepared to have more clusters in different regions to lower the damage radius for regional incidents.
+The RHOBS design is based on multiple shards that represent isolated [RHOBS-specific Observatorium](https://github.com/rhobs/configuration) installations. Shards are currently deployed to two clusters, but the design is prepared to have more clusters in different regions to lower the damage radius for regional incidents.
 
 All clusters are [the OSD](https://docs.openshift.com/dedicated/welcome/index.html), multi-availability zone clusters scheduled using AppSRE's AppInterface declarative GitOps API. See (behind VPN):
 
@@ -42,7 +42,7 @@ All clusters are [the OSD](https://docs.openshift.com/dedicated/welcome/index.ht
 
 Each Observatorium installation represents RHOBS "shard" and uses multiple Kubernetes namespaces. Typically single shard is limited by the single cluster capacity (amount of the nodes it can handle--usually around 200 for OSD), so we keep a single shard in a single cluster. The only exception is `Telemeter` deployment, which for historical reasons is a separate ("hard") tenant deployed next to `MST` in one cluster. `Telemeter` tenant is used for [OpenShift remote health monitoring](https://access.redhat.com/documentation/en-us/red_hat_openshift_container_storage/4.5/html/monitoring_openshift_container_storage/remote_health_monitoring).
 
-> NOTE: Telemeter was the first responsibility of our service team in the past. We build RHOBS in a way that Telemeter can be a single-region hard tenant. It is isolated because it has different characteristics as typical observability data. It contains very cardinal data with only ~5m sample interval. There is no alerting, only analytic PromQL queries and integration with analytics tools like [obslytics](https://github.com/thanos-community/obslytics). We will focus on `MST` in this design as this is what will be used by the majority of the users.
+> NOTE: Telemeter was the first responsibility of our service team in the past. We built RHOBS in a way that Telemeter can be a single-region hard tenant. It is isolated because it has different characteristics than typical observability data. It contains very cardinal data with only ~5m sample interval. There is no alerting, only analytic PromQL queries and integration with analytics tools like [obslytics](https://github.com/thanos-community/obslytics). We will focus on `MST` in this design as this is what will be used by the majority of the users.
 
 The set of features, topology and interactions are the same across all RHOBS shards. In addition, each shard allows secure and multi-tenant:
 
@@ -55,7 +55,7 @@ The set of features, topology and interactions are the same across all RHOBS sha
 
 At the current moment, the design assumes no cross-communication across shards. No data replication or cross-shard queries. However, in future, there is a plan to [add a federation layer that will allow cross-shard querying](https://issues.redhat.com/browse/RHOBS-40) and a truly global view of observability data. Currently, the user can do that on their own using software like [Thanos Querier](https://thanos.io/tip/components/query.md/, [promxy](https://github.com/jacksontj/promxy) or by graphing multiple Queries with [Grafana](https://grafana.com/grafana/dashboards/).
 
-The RHOBS have [the following dependencies](https://visual-app-interface.devshift.net/services#/services/rhobs/app.yml):
+The RHOBS has [the following dependencies](https://visual-app-interface.devshift.net/services#/services/rhobs/app.yml):
 
 ![](../../assets/rhobs-deps.png)
 
@@ -72,7 +72,7 @@ Now, look at a single shard RHOBS architecture at the microservice level.
 
 ### Services and Interaction Points
 
-The ful ![](../../assets/rhobs-microsvc.png)
+![](../../assets/rhobs-microsvc.png)
 
 Legend:
 
@@ -103,7 +103,7 @@ Storage components are responsible for reading, ingesting and processing metric-
 * Exemplars (ingestion disabled for now).
 * Metadata (ingestion disabled for now).
 
-The majority of components in come [the Thanos project](https://thanos.io/) which is at the core of the metric RHOBS system and shared some code with Prometheus. We also run native [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)) from the Prometheus project. The team also actively contributes to and maintains Thanos & Prometheus.
+The majority of components come under [the Thanos project](https://thanos.io/) which is at the core of the metric RHOBS system and shares some code with Prometheus. We also run native [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) from the Prometheus project. The team also actively contributes to and maintains Thanos & Prometheus.
 
 | Name                                                                                                                                                                           | Type        | Image                                                   | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Sidecars                                                                                                                                                 |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|---------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -170,7 +170,7 @@ The RHOBS tenant identifies the owner of data (metrics, rules, etc.). The owner 
 
 The user management for who is part of tenant is out of the scope for RHOBS and should be handled outside of RHOBS, ideally with SSO team help. On the other hand, the RHOBS team manages RBAC that map certain service account `sub` ID token field to roles against certain tenant with read/write and metric/log/tracing granularity.
 
-The RHOBS tenancy is label based. It means that within Thanos we build features that allows limit, monitor, ingest, read series and isolate for specific labels. In our case it's the `tenant_id = <TENANT>`. The correct `tenant_id` is found on `observatorium-api` level:
+The RHOBS tenancy is label based. It means that within Thanos we build features that allow limiting, monitoring, ingesting, reading series, and isolating for specific labels. In our case it's the `tenant_id = <TENANT>` label. The correct `tenant_id` is found on `observatorium-api` level:
 
 1. Tenant name is encoded either in the header of URL of the tenant Route.
 2. Based on tenant we choose the authentication option. In most cases it's OIDC flow targeting Red Hat SSO as the issuer.
