@@ -152,6 +152,106 @@ Similarly, if you want to **delete** a rule, you can remove that from your exist
 
 If you want to **delete** all rule(s) for a tenant, you can run `obsctl metrics set --rule.file=` with an empty file.
 
+### Sync rules from your cluster
+
+Alternatively, you can choose to sync rules from your cluster to Observatorium [Rules API](https://observatorium.io/docs/design/rules-api.md/) via prometheus-operator's [PrometheusRule CRD](https://prometheus-operator.dev/docs/operator/design/#prometheusrule).
+
+Create PrometheusRule objects in your cluster containing your desired rules (you can even create multiple). Ensure that you have a `tenant` label specifying your tenant in `metadata.labels` like below,
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    tenant: rhobs
+  name: obsctl-reloader-example
+spec:
+  groups:
+  - interval: 30s
+    name: test-firing-alert
+    rules:
+    - alert: TestFiringAlert
+      annotations:
+        dashboard: https://grafana.stage.devshift.net/d/Tg-mH0rizaSJDKSADX/api?orgId=1&refresh=1m
+        description: Test firing alert!!
+        message: Message of firing alert here
+        runbook: https://github.com/rhobs/configuration/blob/main/docs/sop/observatorium.md
+        summary: Summary of firing alert here
+      expr: vector(1)
+      for: 1m
+      labels:
+        severity: page
+  - interval: 30s
+    name: test-new-firing-alert
+    rules:
+    - alert: TestNewFiringAlert
+      annotations:
+        dashboard: https://grafana.stage.devshift.net/d/Tg-mH0rizaSJDKSADX/api?orgId=1&refresh=1m
+        description: Test new firing alert!!
+        message: Message of new firing alert here
+        runbook: https://github.com/rhobs/configuration/blob/main/docs/sop/observatorium.md
+        summary: Summary of new firing alert here
+      expr: vector(1)
+      for: 1m
+      labels:
+        severity: page
+```
+
+Once the rules are present in a namespace, you can run a [obsctl-reloader](https://github.com/rhobs/obsctl-reloader) deployment to sync these rules to Observatorium. Images can be found at https://quay.io/repository/app-sre/obsctl-reloader.
+
+You can create a deployment using example [OpenShift template](https://github.com/rhobs/obsctl-reloader/blob/main/openshift/template.yaml) with correct K8s RBAC. Ensure that you specify your OIDC credentials, tenant name and cluster namespace containing PrometheusRules, as environment variables,
+
+```yaml
+...
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app.kubernetes.io/component: obsctl-reloader
+        app.kubernetes.io/instance: obsctl-reloader
+        app.kubernetes.io/name: obsctl-reloader
+    template:
+      metadata:
+        labels:
+          app.kubernetes.io/component: obsctl-reloader
+          app.kubernetes.io/instance: obsctl-reloader
+          app.kubernetes.io/name: obsctl-reloader
+          app.kubernetes.io/version: latest
+      spec:
+        containers:
+        - env:
+          - name: NAMESPACE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: OBSERVATORIUM_URL
+            value: https://observatorium-mst.api.stage.openshift.com
+          - name: OIDC_AUDIENCE
+            value: observatorium
+          - name: OIDC_ISSUER_URL
+            value: https://sso.redhat.com/auth/realms/redhat-external
+          - name: SLEEP_DURATION_SECONDS
+            value: 15
+          - name: MANAGED_TENANTS
+            value: rhobs
+          - name: OIDC_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                key: client_id
+                name: ${TENANT_SECRET}
+          - name: OIDC_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: client_secret
+                name: ${TENANT_SECRET}
+          image: quay.io/app-sre/obsctl-reloader:a9daddf
+          imagePullPolicy: IfNotPresent
+          name: obsctl-reloader
+        serviceAccountName: obsctl-reloader
+```
+
+Keep in mind that all the PrometheusRule CRDs are combined to a single rule file by obsctl-reloader. Also, note that the obsctl-reloader project is still experimental, and needs to be deployed by the tenant.
+
 ### Create a routing configuration in Alertmanager
 
 Now that the alerting rule is correctly created, you can start to configure Alertmanager.
