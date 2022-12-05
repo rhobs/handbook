@@ -2,4 +2,4 @@
 
 Openshift Monitoring is composed of Platform Monitoring and User Workload Monitoring.
 
-See official document [here](https://docs.openshift.com/container-platform/4.10/monitoring/monitoring-overview.html#understanding-the-monitoring-stack_monitoring-overview)
+The official [OpenShift documentation](https://docs.openshift.com/container-platform/latest/monitoring/monitoring-overview.html#understanding-the-monitoring-stack_monitoring-overview) contains all user-facing information such as usage and configuration.
