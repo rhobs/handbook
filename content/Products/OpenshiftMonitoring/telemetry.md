@@ -77,7 +77,7 @@ Reach out to the monitoring team on the `#forum-monitoring` Slack team for an ex
 
 ### Configure recording rules
 
-Recording rules are often required to reduce the [cardinality](#what-is-the-cardinality-of-a-metric) of the metrics being shipped.
+Recording rules are often required to reduce the [cardinality](https://rhobs-handbook.netlify.app/products/openshiftmonitoring/telemetry.md/#what-is-the-cardinality-of-a-metric) of the metrics being shipped.
 
 Even for low-cardinality metrics, we recommend to aggregate them before shipping to Telemetry to remove unnecessary labels such as `instance` or `pod`.
 
