@@ -50,7 +50,7 @@ If you are above these limits, you have 2 choices:
 
 Finally your metric **MUST NOT** contain any personally identifiable information (names, email addresses, information about user workloads).
 
-Use the following template to file a JIRA task in the MON project.
+Use the following template to file a JIRA task in the [MON project](https://issues.redhat.com/projects/MON).
 
 ```
 h1. Request for sending data via telemetry
