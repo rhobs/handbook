@@ -73,7 +73,7 @@ h2. <Other metric>
 
 ```
 
-Reach out to the monitoring team on the `#forum-monitoring` Slack team for an explicit approval (typically one of the in-cluster team lead and RHOBS team leads).
+Reach out to `@team-telemetry` on the `#forum-monitoring` or `#forum-observatorium` Slack channels for an explicit approval (e.g. in-cluster and RHOBS team leads).
 
 ### Configure recording rules
 
