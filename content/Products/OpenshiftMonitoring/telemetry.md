@@ -196,9 +196,9 @@ Yes, the Telemeter client is already configured to collect and send firing alert
 
 Once you have updated the `telemeter-client` configuration in the `master` branch, you can create backports to older OCP releases. The procedure follows the usual OCP backport process which involves creating bug tickets in the `OCPBUGS` project (preferably assigned to your component) and opening pull requests in openshift/cluster-monitoring-operator against the desired `release-4.x` branches.
 
-### How do I get access to Telemtry?
+### How do I get access to Telemetry?
 
-Check https://help.datahub.redhat.com/docs/interacting-with-telemetry-data
+Check https://gitlab.cee.redhat.com/data-hub/dh-docs/-/blob/master/docs/interacting-with-telemetry-data.adoc
 
 ### How do I instrument my component for Prometheus?
 
