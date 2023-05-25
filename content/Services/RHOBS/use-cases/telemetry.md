@@ -4,11 +4,12 @@
 
 Telemeter is the metrics-only hard tenant of the RHOBS service designed as a centralized OpenShift Telemetry pipeline for OpenShift Container Platform. It is an essential part of gathering real-time telemetry for remote health monitoring, automation and billing purposes.
 
-*Official OpenShift Documentation*: https://docs.openshift.com/container-platform/4.7/support/remote_health_monitoring/about-remote-health-monitoring.html#telemetry-about-telemetry_about-remote-health-monitoring
+* [OpenShift Documentation](https://docs.openshift.com/container-platform/latest/support/remote_health_monitoring/about-remote-health-monitoring.html#telemetry-about-telemetry_about-remote-health-monitoring) about the Telemetry service.
+* [Internal documentation](https://gitlab.cee.redhat.com/data-hub/dh-docs/-/blob/master/docs/interacting-with-telemetry-data.adoc) for interacting with the Telemetry data.
 
 ## Product Managers
 
-* Shannon Wilber
+* Roger Floren
 
 ## Big Picture Overview
 
