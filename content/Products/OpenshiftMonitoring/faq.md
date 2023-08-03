@@ -1,17 +1,13 @@
-# Debugging the default OpenShift 4.x in-cluster Monitoring: Platform Monitoring and User Workload Monitoring Products
-
-## Overview
+# Frequently asked questions
 
 This serves as a collection of resources that relate to FAQ around configuring/debugging the in-cluster monitoring stack. Particularly it applies to two OpenShift Projects:
 
 * [Platform Cluster Monitoring - PM](https://docs.openshift.com/container-platform/latest/monitoring/understanding-the-monitoring-stack.html#understanding-the-monitoring-stack_understanding-the-monitoring-stack)
 * [User Workload Monitoring - UWM](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html)
 
-## Troubleshooting when faced with potential symptoms:
+## How do I understand why targets aren't discovered and metrics are missing?
 
-### ServiceMonitor created but no metrics from the service
-
-Both `PM` and `UWM` monitoring stack relies on the `ServiceMonitor` custom resource in order to tell Prometheus what endpoints to scrape.
+Both `PM` and `UWM` monitoring stacks rely on the `ServiceMonitor` and `PodMonitor` custom resources in order to tell Prometheus which endpoints to scrape.
 
 The examples below show the namespace `openshift-monitoring`, which can be replaced with `openshift-user-workload-monitoring` when dealing with `UWM`.
 
@@ -49,7 +45,7 @@ Assuming it does exist then we know `prometheus-operator` is doing its job. Doub
 
 Check the service discovery endpoint to ensure Prometheus can discover the target. It will need the appropriate RBAC to do so. An example can be found [here](https://github.com/openshift/cluster-monitoring-operator/blob/23201e012586d4864ca23593621f843179c47412/assets/prometheus-k8s/role-specific-namespaces.yaml#L35-L50).
 
-### TargetDown alert firing
+## How do I troubleshoot the TargetDown alert?
 
 We have, in the past seen cases where the `TargetDown` alert was firing when all endpoints appeared to be up. The following commands fetch some useful metrics to help identify the cause.
 
@@ -83,13 +79,13 @@ oc exec -n openshift-monitoring prometheus-k8s-0 -c prometheus -- curl http://lo
 oc exec -n openshift-monitoring prometheus-k8s-1 -c prometheus -- curl http://localhost:9090/api/v1/query --data-urlencode 'sort_desc(max by(job) (max_over_time(scrape_duration_seconds[1h])))' > slow.prometheus-k8s-1.json
 ```
 
-## Debugging high CPU usage
+## How do I troubleshoot high CPU usage of Prometheus?
 
 Often, when "high" CPU usage or spikes are identified it can be a symptom of expensive rules.
 
 A good place to start the investigation is the `/rules` endpoint of Prometheus and analyse any queries which might contribute to the problem by identifying excessive rule evaluation times.
 
-### Obtaining CPU profiles
+## How do I retrieve CPU profiles?
 
 In cases where excessive CPU usage is being reported, it might be useful to obtain [Pprof profiles](https://github.com/google/pprof/blob/02619b876842e0d0afb5e5580d3a374dad740edb/doc/README.md) from the Prometheus containers over a short time span.
 
@@ -109,7 +105,7 @@ while [ $duration -ne 0 ]; do
 done
 ```
 
-## Debugging high memory usage
+## How do I debug high memory usage?
 
 The following queries might prove useful for debugging.
 
@@ -129,7 +125,7 @@ oc -n openshift-monitoring exec -c prometheus prometheus-k8s-0 \
 'query=sort_desc(sum by (pod,namespace) (max without(instance) (container_memory_working_set_bytes{namespace=~"openshift-monitoring|openshift-user-workload-monitoring", container=""})))' > memory.json
 ```
 
-### Obtaining memory profiles
+## How do I get memory profiles?
 
 In cases where excessive memory is being reported, it might be useful to obtain [Pprof profiles](https://github.com/google/pprof/blob/02619b876842e0d0afb5e5580d3a374dad740edb/doc/README.md) from the Prometheus containers over a short time span.
 
