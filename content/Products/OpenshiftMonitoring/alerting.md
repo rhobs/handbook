@@ -4,7 +4,7 @@ Please refer to the [Alerting Consistency](https://github.com/openshift/enhancem
 
 ## Identifying alerting rules without a namespace label
 
-The enhancement proposal mentioned above states the following
+The enhancement proposal mentioned above states the following for OCP built-in alerts
 
 > Alerts SHOULD include a namespace label indicating the source of the alert.
 
