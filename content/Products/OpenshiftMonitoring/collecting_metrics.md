@@ -1,5 +1,9 @@
 # Collecting metrics with Prometheus
 
+This document explains how to ingest metrics into the OpenShift Platform monitoring stack. **It only applies for the OCP core components and Red Hat certified operators.**
+
+For user application monitoring, please refer to the [official OCP documentation](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html).
+
 ## Targeted audience
 
 This document is intended for OpenShift developers that want to expose Prometheus metrics from their operators and operands. Readers should be familiar with the architecture of the [OpenShift cluster monitoring stack](https://docs.openshift.com/container-platform/latest/monitoring/monitoring-overview.html#understanding-the-monitoring-stack_monitoring-overview).
