@@ -1,5 +1,9 @@
 # Collecting metrics with Prometheus
 
+This document explains how to ingest metrics into the OpenShift Platform monitoring stack. **It only applies for the OCP core components and Red Hat certified operators.**
+
+For user application monitoring, please refer to the [official OCP documentation](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html).
+
 ## Targeted audience
 
 This document is intended for OpenShift developers that want to expose Prometheus metrics from their operators and operands. Readers should be familiar with the architecture of the [OpenShift cluster monitoring stack](https://docs.openshift.com/container-platform/latest/monitoring/monitoring-overview.html#understanding-the-monitoring-stack_monitoring-overview).
@@ -74,11 +78,11 @@ Here is an example of a container's definition to be added to the Pod's template
     # annotation.
     - name: secret-kube-rbac-proxy-tls
       secret:
-        name: secret-kube-rbac-proxy-tls
+        secretName: kube-rbac-proxy-tls
     # Secret containing the kube-rbac-proxy configuration (see below).
     - name: secret-kube-rbac-proxy-metric
       secret:
-        name: secret-kube-rbac-proxy-metric
+        secretName: secret-kube-rbac-proxy-metric
     # ConfigMap containing the CA used to verify the client certificate.
     - name: metrics-client-ca
       configMap:
@@ -139,7 +143,7 @@ metadata:
   annotations:
     # This annotation tells the service CA operator to provision a Secret
     # holding the certificate + key to be mounted in the pods.
-    # The Secret name is "secret-<annotation value>" (e.g. "secret-my-app-tls").
+    # The Secret name is "<annotation value>" (e.g. "secret-my-app-tls").
     service.beta.openshift.io/serving-cert-secret-name: tls-my-app-tls
   labels:
     app.kubernetes.io/name: my-app
