@@ -1,3 +1,0 @@
-# Loki
-
-> In progress.
