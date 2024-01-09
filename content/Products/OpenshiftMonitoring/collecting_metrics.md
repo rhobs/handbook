@@ -113,11 +113,15 @@ type: Opaque
 
 Example: [node-exporter](https://github.com/openshift/cluster-monitoring-operator/blob/e51a06ffdb974003d4024ade3545f5e5e6efe157/assets/node-exporter/daemonset.yaml#L65-L98) from the Cluster Monitoring operator.
 
+### controller-runtime (>= v0.16.0)
+
+Starting with v0.16.0, the `controller-runtime` framework provides a way to expose and secure a `/metrics` endpoint using TLS with minimal effort.
+
+Refer to https://pkg.go.dev/sigs.k8s.io/controller-runtime/pkg/metrics/server for details about TLS configuration and check the next section to understand how it needs to be configured.
+
 ### Roll your own HTTPS server
 
-> You don't use `library-go` or don't want to run a `kube-rbac-proxy` sidecar.
-
-For instance if your component is built on top of `sigs.k8s.io/controller-runtime`, the library doesn't provide any facility to configure the HTTP authn/authz as of today and it's not even possible to configure TLS (refer to https://github.com/kubernetes-sigs/controller-runtime/issues/2073 for more details). Another case might be that your component isn't an operator.
+> You don't use `library-go`, `controller-runtime` >= v0.16.0 or don't want to run a `kube-rbac-proxy` sidecar.
 
 In such situations, you need to implement your own HTTPS server for `/metrics`. As explained before, it needs to require and verify the TLS client certificate using the root CA stored under the `client-ca-file` key of the `kube-system/extension-apiserver-authentication` ConfigMap.
 
