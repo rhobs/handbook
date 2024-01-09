@@ -21,6 +21,8 @@ As described in the [Client certificate scraping](https://github.com/openshift/e
 
 To this goal, the Cluster monitoring operator provisions a TLS client certificate for the in-cluster Prometheus. The client certificate is issued for the `system:serviceaccount:openshift-monitoring:prometheus-k8s` Common Name (CN) and signed by the `kubernetes.io/kube-apiserver-client` [signer](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#kubernetes-signers). The certificate can be verified using the certificate authority (CA) bundle located at the `client-ca-file` key of the `kube-system/extension-apiserver-authentication` ConfigMap.
 
+> In practice the Cluster Monitoring Operator creates a CertificateSigningRequest object for the `prometheus-k8s` service account which is automatically approved by the cluster-policy-controller. Once the certificate is issued by the controller, CMO provisions a secret named `metrics-client-certs` which contains the TLS certificate and key (respectively under `tls.crt` and `tls.key` keys in the secret). CMO also rotates the certificate before it gets expired.
+
 There are several options available depending on which framework your component is built.
 
 ### library-go
