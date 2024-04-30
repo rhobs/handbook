@@ -6,7 +6,7 @@ This document is intended for OpenShift developers that want to ship new metrics
 
 ## Background
 
-Before going to the details, a few words about [Telemetry](https://rhobs-handbook.netlify.app/services/rhobs/use-cases/telemetry.md/).
+Before going to the details, a few words about [Telemetry](https://rhobs-handbook.netlify.app/services/rhobs/use-cases/telemetry.md/) and the process to add a new metric..
 
 **What is Telemetry?**
 
@@ -14,11 +14,15 @@ Telemetry is a system operated and hosted by Red Hat that allows to collect data
 
 **What does sending metrics via Telemetry mean?**
 
-You should send the metrics via Telemetry when you want and need to see these metrics for **all** OpenShift clusters. This is primarily for troubleshooting and monitoring the fleet of clusters. Users can already see these metrics in their clusters via Prometheus even when not available via Telemetry.
+You should send the metrics via Telemetry when you want and need to see these metrics for **all** OpenShift clusters. This is primarily for gaining insights on how OpenShift is used, troubleshooting and monitoring the fleet of clusters. Users can already see these metrics in their clusters via Prometheus even when not available via Telemetry.
 
 **How are metrics shipped via Telemetry?**
 
 Only metrics which are already collected by the [in-cluster monitoring stack](https://rhobs-handbook.netlify.app/products/openshiftmonitoring/telemetry.md/#in-cluster-monitoring-stack) can be shipped via Telemetry. The `telemeter-client` pod running in the `openshift-monitoring` namespace collects metrics from the `prometheus-k8s` service every 4m30s using the `/federate` endpoint and ships the samples to the Telemetry endpoint using a custom protocol.
+
+**How long will it take for my new telemetry metrics to show up?**
+
+Please start this process and involve the monitoring team as early as possible. The process described in this document includes a thorough review of the underlying metrics and labels. The monitoring team will try to understand your use case and perhaps propose improvements and optimizations. Metric, label and rule names will be reviewed for [following best practices](https://prometheus.io/docs/practices/naming/). This can take several review rounds over multiple weeks.
 
 ## Requirements
 
@@ -32,7 +36,7 @@ Your component should already be instrumented and scraped by the [in-cluster mon
 
 The overall process is as follows:
 1. Request approval from the monitoring team.
-2. (optional) Configure recording rules using `PrometheusRule` objects.
+2. Configure recording rules using `PrometheusRule` objects.
 3. Modify the configuration of the Telemeter client in the [Cluster Monitoring Operator](https://github.com/openshift/cluster-monitoring-operator/) repository to collect the new metrics.
 4. Synchronize the Telemeter server's configuration from the Cluster Monitoring Operator project.
 5. Wait for the Telemeter server's configuration to be rolled out to production.
@@ -77,9 +81,9 @@ Reach out to `@team-telemetry` on the `#forum-monitoring` or `#forum-observatori
 
 ### Configure recording rules
 
-Recording rules are often required to reduce the [cardinality](https://rhobs-handbook.netlify.app/products/openshiftmonitoring/telemetry.md/#what-is-the-cardinality-of-a-metric) of the metrics being shipped.
+Recording rules are required to reduce the [cardinality](https://rhobs-handbook.netlify.app/products/openshiftmonitoring/telemetry.md/#what-is-the-cardinality-of-a-metric) of the metrics being shipped.
 
-Even for low-cardinality metrics, we recommend to aggregate them before shipping to Telemetry to remove unnecessary labels such as `instance` or `pod`.
+Even for low-cardinality metrics, we require to aggregate them before shipping to Telemetry to remove unnecessary labels such as `instance` or `pod`. This will also protect the telemetry backend against future label additions to the underlying metrics.
 
 Let's take a concrete example: each Prometheus pod exposes a `prometheus_tsdb_head_series` metric which tracks the number of active timeseries. There can be up to 4 Prometheus pods in a given cluster (2 pods in `openshift-monitoring` and 2 in `openshift-user-workload-monitoring` when user-defined monitoring is enabled). To reduce the number of timeseries shipped via Telemetry, we configure the following recording rule to sum the values by `namespace` and `job` labels:
 
@@ -103,6 +107,8 @@ spec:
         )
       record: openshift:prometheus_tsdb_head_series:sum
 ```
+
+Your `PrometheusRule` object(s) should be created by your operator with your `ServiceMonitor` and/or `PodMonitor` objects.
 
 ### Modify the Telemeter client's configuration
 
