@@ -54,14 +54,17 @@ If you are above these limits, you have 2 choices:
 
 Finally your metric **MUST NOT** contain any personally identifiable information (names, email addresses, information about user workloads).
 
-Use the following template to file a JIRA task in the [MON project](https://issues.redhat.com/projects/MON).
+Use the following information to file 1 JIRA ticket per metric in the [MON project](https://issues.redhat.com//secure/CreateIssueDetails!init.jspa?pid=12323177&issuetype=3&labels=telemetry-review-request&summary=Send+metric+...+via+Telemetry&description=h1.%20Request%20for%20sending%20data%20via%20telemetry%0A%0AThe%20goal%20is%20to%20collect%20metrics%20about%20...%20because%20...%0A%0Ah2.%20%3CMetric%20name%3E%0A%0A%3CMetric%20name%3E%20represents%20...%0A%0ALabels%0A%2A%20%3Clabel%201%3E%2C%20possible%20values%20are%20...%0A%2A%20%3Clabel%202%3E%2C%20possible%20values%20are%20...%0A%0AThe%20cardinality%20of%20the%20metric%20is%20at%20most%20%3CX%3E.%0A%0AComponent%20exposing%20the%20metric%3A%20https%3A%2F%2Fgithub.com%2F%3Corg%3E%2F%3Cproject%3E%0Ah2.&priority=4):
+
+* Type: `Task`
+* Title: `Send metric <metric name> via Telemetry`
+* Label: `telemetry-review-request`
+* Description template:
 
 ```
 h1. Request for sending data via telemetry
 
 The goal is to collect metrics about ... because ...
-
-h2. <Metric name>
 
 <Metric name> represents ...
 
@@ -71,13 +74,10 @@ Labels
 
 The cardinality of the metric is at most <X>.
 
-h2. <Other metric>
-
-...
-
+Component exposing the metric: https://github.com/<org>/<project>
 ```
 
-Reach out to `@team-telemetry` on the `#forum-monitoring` or `#forum-observatorium` Slack channels for an explicit approval (e.g. in-cluster and RHOBS team leads).
+Reach out to `@team-telemetry` on the `#forum-openshift-monitoring` or `#forum-observatorium` Slack channels for an explicit approval (e.g. in-cluster and RHOBS team leads).
 
 ### Configure recording rules
 
