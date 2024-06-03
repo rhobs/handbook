@@ -54,14 +54,17 @@ If you are above these limits, you have 2 choices:
 
 Finally your metric **MUST NOT** contain any personally identifiable information (names, email addresses, information about user workloads).
 
-Use the following template to file a JIRA task in the [MON project](https://issues.redhat.com/projects/MON).
+Use the following information to file 1 JIRA ticket per metric in the [MON project](https://issues.redhat.com/projects/MON):
+
+* Type: `Task`
+* Title: `Send metric <metric name> via Telemetry`
+* Label: `telemetry-review-request`
+* Description template:
 
 ```
 h1. Request for sending data via telemetry
 
 The goal is to collect metrics about ... because ...
-
-h2. <Metric name>
 
 <Metric name> represents ...
 
@@ -71,10 +74,7 @@ Labels
 
 The cardinality of the metric is at most <X>.
 
-h2. <Other metric>
-
-...
-
+Component exposing the metric: https://github.com/<org>/<project>
 ```
 
 Reach out to `@team-telemetry` on the `#forum-monitoring` or `#forum-observatorium` Slack channels for an explicit approval (e.g. in-cluster and RHOBS team leads).
