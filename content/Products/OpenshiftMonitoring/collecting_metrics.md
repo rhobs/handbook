@@ -136,11 +136,20 @@ Example: https://github.com/openshift/cluster-monitoring-operator/pull/1870
 
 ## Configuring Prometheus to scrape metrics
 
-To tell Promehteus to scrape the metrics from your component, you need to create:
-* A Service object.
-* a ServiceMonitor object targeting the Service.
+To tell the Prometheus pods running in the `openshift-monitoring` namespace (e.g. `prometheus-k8s-{0,1}`) to scrape the metrics from your operator/operand pods, you should use `ServiceMonitor` and/or `PodMonitor` custom resources.
 
-The Service object looks like this:
+The workflow is:
+* Add the `openshift.io/cluster-monitoring: "true"` label to the namespace where the scraped targets live.
+  * **Important: only OCP core components and Red Hat certified operators can set this label on namespaces.**
+* In case of ServiceMonitor:
+  * Create a Service object selecting the scraped pods.
+  * Create a ServiceMonitor object targeting the Service.
+* In case of PodMonitor:
+  * Create a PodMonitor object targeting the pods.
+
+Below is an fictitious example using a ServiceMonitor object to scrape metrics from pods deployed in the `openshift-example` namespace.
+
+**Service manifest**
 
 ```yaml
 apiVersion: v1
@@ -160,12 +169,13 @@ spec:
   - name: metrics
     port: 8443
     targetPort: metrics
+  # Select all Pods in the same namespace that have the `app.kubernetes.io/name: my-app` label.
   selector:
     app.kubernetes.io/name: my-app
   type: ClusterIP
 ```
 
-Then the ServiceMonitor object looks like:
+**ServiceMonitor manifest**
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -195,3 +205,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: my-app
 ```
+
+## Configuring Prometheus rules
+
+In a similar way, you can configure the Prometheus pods with recording and alerting rules based on the metrics being collected. To do so, you should create `PrometheusRule` objects in your operator/operand namespace which will also be picked up by the Prometheus operator.
