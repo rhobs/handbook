@@ -189,6 +189,7 @@ spec:
     # Matches the name of the service's port.
     port: metrics
     scheme: https
+    tlsConfig:
       # The CA file used by Prometheus to verify the server's certificate.
       # It's the cluster's CA bundle from the service CA operator.
       caFile: /etc/prometheus/configmaps/serving-certs-ca-bundle/service-ca.crt
