@@ -141,7 +141,7 @@ To tell the Prometheus pods running in the `openshift-monitoring` namespace (e.g
 The workflow is:
 * Add the `openshift.io/cluster-monitoring: "true"` label to the namespace where the scraped targets live.
   * **Important: only OCP core components and Red Hat certified operators can set this label on namespaces.**
-* Add Role and RoleBinding to give prometheus-k8s service user access to your namespace.
+* Add Role and RoleBinding to give the prometheus-k8s service account access to pods, endpoints and services in your namespace.
 * In case of ServiceMonitor:
   * Create a Service object selecting the scraped pods.
   * Create a ServiceMonitor object targeting the Service.
