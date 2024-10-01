@@ -38,6 +38,31 @@ transformations:
             weight: 2
             pre: <i class='fas fa-users'></i>
 
+  - glob: "Products/OpenshiftMonitoring/collecting_metrics.md"
+    frontMatter:
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+        weight: 10
+  - glob: "Products/OpenshiftMonitoring/alerting.md"
+    frontMatter:
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+        weight: 20
+  - glob: "Products/OpenshiftMonitoring/telemetry.md"
+    frontMatter:
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+        weight: 30
+  - glob: "Products/OpenshiftMonitoring/faq.md"
+    frontMatter:
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+        weight: 40
+
   - glob: "**/README.md"
     path: _index.md
     frontMatter: &defaultFrontMatter
