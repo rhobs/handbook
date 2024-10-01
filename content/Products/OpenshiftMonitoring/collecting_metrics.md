@@ -1,3 +1,7 @@
+---
+weight: 10
+---
+
 # Collecting metrics with Prometheus
 
 This document explains how to ingest metrics into the OpenShift Platform monitoring stack. **It only applies for the OCP core components and Red Hat certified operators.**

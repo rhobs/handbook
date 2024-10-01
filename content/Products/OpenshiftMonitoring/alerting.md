@@ -1,3 +1,7 @@
+---
+weight: 20
+---
+
 # Alerting guidelines
 
 Please refer to the [Alerting Consistency](https://github.com/openshift/enhancements/blob/master/enhancements/monitoring/alerting-consistency.md) OpenShift enhancement proposal for the recommendations applying to OCP built-in alerting rules.

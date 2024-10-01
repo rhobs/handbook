@@ -15,6 +15,7 @@
 .envrc
 web/node_modules
 web/resources/_gen
+web/public
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
