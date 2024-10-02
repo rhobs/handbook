@@ -9,6 +9,10 @@ This serves as a collection of resources that relate to FAQ around configuring/d
 * [Platform Cluster Monitoring - PM](https://docs.openshift.com/container-platform/latest/monitoring/understanding-the-monitoring-stack.html#understanding-the-monitoring-stack_understanding-the-monitoring-stack)
 * [User Workload Monitoring - UWM](https://docs.openshift.com/container-platform/latest/monitoring/enabling-monitoring-for-user-defined-projects.html)
 
+## How can I (as a monitoring developer) troubleshoot support cases?
+
+See this [presentation](https://docs.google.com/presentation/d/1SY0xHNO-QMvhMi1kRSJlZuYnkuZ3nFLJvWjG0CM7wgw/edit) to understand which tools are at your disposal.
+
 ## How do I understand why targets aren't discovered and metrics are missing?
 
 Both `PM` and `UWM` monitoring stacks rely on the `ServiceMonitor` and `PodMonitor` custom resources in order to tell Prometheus which endpoints to scrape.
