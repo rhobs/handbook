@@ -55,6 +55,8 @@ Check the service discovery endpoint to ensure Prometheus can discover the targe
 
 ## How do I troubleshoot the TargetDown alert?
 
+First of all, check the [TargetDown runbook](https://github.com/openshift/runbooks/blob/master/alerts/cluster-monitoring-operator/TargetDown.md).
+
 We have, in the past seen cases where the `TargetDown` alert was firing when all endpoints appeared to be up. The following commands fetch some useful metrics to help identify the cause.
 
 As the alert fires, get the list of active targets in Prometheus
