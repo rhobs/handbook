@@ -13,6 +13,8 @@ To instrument software written in Golang, see the official [Golang client](https
 Prometheus stores all data as time series which are a stream of timestamped values (samples) identified by a metric name and a set of unique labels (a.ka. dimensions or key/value pairs). Its data model is described in details in this [page](https://prometheus.io/docs/concepts/data_model/). Time series would be represented like this:
 
 ```
+# HELP http_requests_total Total number of HTTP requests by method and handler.
+# TYPE http_requests_total counter
 http_requests_total{method="GET", handler="/messages"}  500
 http_requests_total{method="POST", handler="/messages"} 10
 ```
@@ -64,7 +66,7 @@ Here is a fictional Go code example instrumented with a Gauge metric and a multi
 
 ## Labels
 
-Defining when to add and when not to add a label to a metric is a [difficult choice](https://prometheus.io/docs/practices/instrumentation/#use-labels). In general refrain from adding too many labels (or too many label values: every unique set of label names and values creates a new time series and Prometheus memory usage is mostly driven by the number of live times series (which are stored in RAM). A good rule of thumb is to have less than 10 time series per metric name and per target. A beginner mistake is to store information such as username, IP address or error messages into a label which can lead to thousands of time series.
+Defining when to add and when not to add a label to a metric is a [difficult choice](https://prometheus.io/docs/practices/instrumentation/#use-labels). The general rule is: the fewer labels, the better. Every unique combination of label names and values creates a new time series and Prometheus memory usage is mostly driven by the number of times series loaded into RAM during ingestion and querying. A good rule of thumb is to have less than 10 time series per metric name and target. A common mistake is to store dynamic information such as usernames, IP addresses or error messages into a label which can lead to thousands of time series.
 
 Labels such as `pod`, `service`, `job` and `instance` shouldn't be set by the application. Instead they are discovered at runtime by Prometheus when it queries the Kubernetes API to discover which targets should be scraped for metrics.
 
