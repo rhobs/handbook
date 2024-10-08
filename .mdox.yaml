@@ -38,6 +38,12 @@ transformations:
             weight: 2
             pre: <i class='fas fa-users'></i>
 
+  - glob: "Products/OpenshiftMonitoring/instrumentation.md"
+    frontMatter:
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+        weight: 5
   - glob: "Products/OpenshiftMonitoring/collecting_metrics.md"
     frontMatter:
       template: |
