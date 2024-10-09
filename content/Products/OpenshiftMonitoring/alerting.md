@@ -1,8 +1,10 @@
----
-weight: 20
----
+# Alerting
 
-# Alerting guidelines
+## Targeted audience
+
+This document is intended for OpenShift developers that want to write alerting rules for their operators and operands.
+
+## Guidelines
 
 Please refer to the [Alerting Consistency](https://github.com/openshift/enhancements/blob/master/enhancements/monitoring/alerting-consistency.md) OpenShift enhancement proposal for the recommendations applying to OCP built-in alerting rules.
 

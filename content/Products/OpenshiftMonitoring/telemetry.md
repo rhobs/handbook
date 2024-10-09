@@ -1,7 +1,3 @@
----
-weight: 30
----
-
 # Sending metrics via Telemetry
 
 ## Targeted audience

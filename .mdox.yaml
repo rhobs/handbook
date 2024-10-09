@@ -56,6 +56,12 @@ transformations:
         title: "{{ .Origin.FirstHeader }}"
         lastmod: "{{ .Origin.LastMod }}"
         weight: 20
+  - glob: "Products/OpenshiftMonitoring/dashboards.md"
+    frontMatter:
+      template: |
+        title: "{{ .Origin.FirstHeader }}"
+        lastmod: "{{ .Origin.LastMod }}"
+        weight: 25
   - glob: "Products/OpenshiftMonitoring/telemetry.md"
     frontMatter:
       template: |
