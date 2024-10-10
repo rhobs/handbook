@@ -80,3 +80,4 @@ You can find an example of this pattern in the [github.com/prometheus-operator/p
 
 * [Collect metrics](collecting_metrics.md) with Prometheus.
 * [Configure alerting](alerting.md) with Prometheus.
+* [Add dashboards](dashboards.md) to the OCP console.

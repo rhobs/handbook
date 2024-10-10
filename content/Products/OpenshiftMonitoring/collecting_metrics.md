@@ -1,7 +1,3 @@
----
-weight: 10
----
-
 # Collecting metrics with Prometheus
 
 This document explains how to ingest metrics into the OpenShift Platform monitoring stack. **It only applies for the OCP core components and Red Hat certified operators.**
@@ -250,3 +246,8 @@ spec:
 ## Configuring Prometheus rules
 
 In a similar way, you can configure the Prometheus pods with recording and alerting rules based on the metrics being collected. To do so, you should create `PrometheusRule` objects in your operator/operand namespace which will also be picked up by the Prometheus operator.
+
+## Next steps
+
+* [Configure alerting](alerting.md) with Prometheus.
+* [Send Telemetry metrics](telemetry.md).

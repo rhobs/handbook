@@ -1,7 +1,3 @@
----
-weight: 40
----
-
 # Frequently asked questions
 
 This serves as a collection of resources that relate to FAQ around configuring/debugging the in-cluster monitoring stack. Particularly it applies to two OpenShift Projects:
