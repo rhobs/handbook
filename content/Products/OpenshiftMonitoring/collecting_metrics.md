@@ -141,6 +141,11 @@ To tell the Prometheus pods running in the `openshift-monitoring` namespace (e.g
 The workflow is:
 * Add the `openshift.io/cluster-monitoring: "true"` label to the namespace where the scraped targets live.
   * **Important: only OCP core components and Red Hat certified operators can set this label on namespaces.**
+  * OCP core components can set the label on their namespaces in the CVO manifets directly.
+  * For OLM operators:
+    * There's no automatic way to enforce the label (yet).
+    * The OCP console will display a checkbox at installation time to enable cluster monitoring for the operator if you add the `operatorframework.io/cluster-monitoring=true` annotation to the operator's CSV.
+    * For CLI installations, the requirement should be detailed in the installation procedure ([example](https://docs.redhat.com/en/documentation/openshift_container_platform/4.16/html/logging/cluster-logging-deploying#logging-loki-cli-install_cluster-logging-deploying) for the Logging operator).
 * Add Role and RoleBinding to give the prometheus-k8s service account access to pods, endpoints and services in your namespace.
 * In case of ServiceMonitor:
   * Create a Service object selecting the scraped pods.
