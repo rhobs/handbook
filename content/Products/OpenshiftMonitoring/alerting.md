@@ -4,9 +4,40 @@
 
 This document is intended for OpenShift developers that want to write alerting rules for their operators and operands.
 
+## Configuring alerting rules
+
+You configure alerting rules based on the metrics being collected for your component(s). To do so, you should create `PrometheusRule` objects in your operator/operand namespace which will also be picked up by the Prometheus operator (provided that the namespace has the `openshift.io/cluster-monitoring="true"` label for layered operators).
+
+Here is an example of a PrometheusRule object with a single alerting rule:
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cluster-example-operator-rules
+  namespace: openshift-example-operator
+spec:
+  groups:
+  - name: operator
+    rules:
+    - alert: ClusterExampleOperatorUnhealthy
+      annotations:
+        description: Cluster Example operator running in pod {{$labels.namespace}}/{{$labels.pods}} is not healthy.
+        summary: Operator Example not healthy
+      expr: |
+        max by(pod, namespace) (last_over_time(example_operator_healthy[5m])) == 0
+      for: 15m
+      labels:
+        severity: warning
+```
+
+You can choose to configure all your alerting rules into a single `PrometheusRule` object or split them into different objects (one per component). The mechanism to deploy the object(s) depends on the context: it can be deployed by the Cluster Version Operator (CVO), the Operator Lifecycle Manager (OLM) or your own operator.
+
 ## Guidelines
 
 Please refer to the [Alerting Consistency](https://github.com/openshift/enhancements/blob/master/enhancements/monitoring/alerting-consistency.md) OpenShift enhancement proposal for the recommendations applying to OCP built-in alerting rules.
+
+If you need a review of alerting rules from the OCP monitoring team, you can reach them on the `#forum-openshift-monitoring` channel.
 
 ## Identifying alerting rules without a namespace label
 

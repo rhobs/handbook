@@ -248,10 +248,6 @@ spec:
       app.kubernetes.io/name: my-app
 ```
 
-## Configuring Prometheus rules
-
-In a similar way, you can configure the Prometheus pods with recording and alerting rules based on the metrics being collected. To do so, you should create `PrometheusRule` objects in your operator/operand namespace which will also be picked up by the Prometheus operator.
-
 ## Next steps
 
 * [Configure alerting](alerting.md) with Prometheus.
