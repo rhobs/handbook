@@ -121,6 +121,8 @@ Starting with v0.16.0, the `controller-runtime` framework provides a way to expo
 
 Refer to https://pkg.go.dev/sigs.k8s.io/controller-runtime/pkg/metrics/server for details about TLS configuration and check the next section to understand how it needs to be configured.
 
+As an example, you can refer to the [Observability Operator](https://github.com/rhobs/observability-operator/blob/2d192ea23b05bf4e088cf331666fd616efbb3072/pkg/operator/operator.go#L143-L212) implementation.
+
 ### Roll your own HTTPS server
 
 > You don't use `library-go`, `controller-runtime` >= v0.16.0 or don't want to run a `kube-rbac-proxy` sidecar.
@@ -144,7 +146,7 @@ The workflow is:
   * OCP core components can set the label on their namespaces in the CVO manifets directly.
   * For OLM operators:
     * There's no automatic way to enforce the label (yet).
-    * The OCP console will display a checkbox at installation time to enable cluster monitoring for the operator if you add the `operatorframework.io/cluster-monitoring=true` annotation to the operator's CSV.
+    * The OCP console will display a checkbox at installation time to enable cluster monitoring for the operator if you add the `operatorframework.io/cluster-monitoring=true` annotation to the operator's CSV and if the installation namespace starts with `openshift-`.
     * For CLI installations, the requirement should be detailed in the installation procedure ([example](https://docs.redhat.com/en/documentation/openshift_container_platform/4.16/html/logging/cluster-logging-deploying#logging-loki-cli-install_cluster-logging-deploying) for the Logging operator).
 * Add Role and RoleBinding to give the prometheus-k8s service account access to pods, endpoints and services in your namespace.
 * In case of ServiceMonitor:
