@@ -91,6 +91,20 @@ Often, when "high" CPU usage or spikes are identified it can be a symptom of exp
 
 A good place to start the investigation is the `/rules` endpoint of Prometheus and analyse any queries which might contribute to the problem by identifying excessive rule evaluation times.
 
+A sorted list of rule evaluation times can be gathered with the following:
+
+```bash
+oc -n openshift-monitoring exec -c prometheus prometheus-k8s-0 -- curl -s 'http://localhost:9090/api/v1/rules' | jq -r '.data.groups[] | .rules[] | [.evaluationTime, .health, .name] | @tsv' | sort
+```
+
+An overview of the timeseries database can be retrieved with:
+
+```bash
+oc -n openshift-monitoring exec -c prometheus prometheus-k8s-0 -- curl -s 'http://localhost:9090/api/v1/status/tsdb' | jq
+```
+
+Within Prometheus, the `prometheus_rule_evaluation_duration_seconds` metric can be used to view evalutation time by quantile for each instance. Additionally, the `prometheus_rule_group_last_duration_seconds` can be used to determine the longest evaluating rulegroups.
+
 ## How do I retrieve CPU profiles?
 
 In cases where excessive CPU usage is being reported, it might be useful to obtain [Pprof profiles](https://github.com/google/pprof/blob/02619b876842e0d0afb5e5580d3a374dad740edb/doc/README.md) from the Prometheus containers over a short time span.
