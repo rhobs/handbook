@@ -233,17 +233,16 @@ spec:
     port: metrics
     scheme: https
     tlsConfig:
-      # The CA file used by Prometheus to verify the server's certificate.
-      # It's the cluster's CA bundle from the service CA operator.
-      caFile: /etc/prometheus/configmaps/serving-certs-ca-bundle/service-ca.crt
       # The name of the server (CN) in the server's certificate.
       serverName: my-app.openshift-example.svc
-      # The client's certificate file used by Prometheus when scraping the metrics.
-      # This file is located in the Prometheus container.
-      certFile: /etc/prometheus/secrets/metrics-client-certs/tls.crt
-      # The client's key file used by Prometheus when scraping the metrics.
-      # This file is located in the Prometheus container.
-      keyFile: /etc/prometheus/secrets/metrics-client-certs/tls.key
+  # The openshift-monitoring/k8s resource declares a `tls-client-certificate-auth`
+  # scrape class which defines the client certificate and key used by Prometheus
+  # scrape the /metrics endpoint as well as the certificate authority used
+  # used to verify the server's certificate (*). Referencing the scrape class here
+  # avoids specifying the exact filepaths.
+  #
+  # (*) the certificate authority is the cluster's CA bundle from the service CA operator.
+  scrapeClass: tls-client-certificate-auth
   selector:
     # Select all Services in the same namespace that have the `app.kubernetes.io/name: my-app` label.
     matchLabels:
