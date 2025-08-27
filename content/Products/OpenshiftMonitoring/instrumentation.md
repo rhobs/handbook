@@ -27,7 +27,7 @@ Prometheus supports 4 [metric types](https://prometheus.io/docs/concepts/metric_
 
 Adding metrics for any operation should be part of the code review process like any other factor that is kept in mind for production ready code.
 
-To learn more about when to use which metric type, how to name metrics and how to choose labels, read the following documentation:
+To learn more about when to use which metric type, how to name metrics and how to choose labels, read the following documentation. {{% alert color="info" %}}OpenShift follows the outlined conventions whenever possible. Any exceptions should be reviewed and properly motivated.{{% /alert %}}
 * [Prometheus naming recommendations](https://prometheus.io/docs/practices/naming/)
 * [Prometheus instrumentation](https://prometheus.io/docs/practices/instrumentation/)
 * [Kubernetes metric instrumentation guide](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/metric-instrumentation.md)
