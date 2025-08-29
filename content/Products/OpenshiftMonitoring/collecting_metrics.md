@@ -21,7 +21,7 @@ As described in the [Client certificate scraping](https://github.com/openshift/e
 
 To this goal, the Cluster monitoring operator provisions a TLS client certificate for the in-cluster Prometheus. The client certificate is issued for the `system:serviceaccount:openshift-monitoring:prometheus-k8s` Common Name (CN) and signed by the `kubernetes.io/kube-apiserver-client` [signer](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#kubernetes-signers). The certificate can be verified using the certificate authority (CA) bundle located at the `client-ca-file` key of the `kube-system/extension-apiserver-authentication` ConfigMap.
 
-> In practice the Cluster Monitoring Operator creates a CertificateSigningRequest object for the `prometheus-k8s` service account which is automatically approved by the cluster-policy-controller. Once the certificate is issued by the controller, CMO provisions a secret named `metrics-client-certs` which contains the TLS certificate and key (respectively under `tls.crt` and `tls.key` keys in the secret). CMO also rotates the certificate before it gets expired.
+{{% alert color="info" %}} In practice the Cluster Monitoring Operator creates a CertificateSigningRequest object for the `prometheus-k8s` service account which is automatically approved by the cluster-policy-controller. Once the certificate is issued by the controller, CMO provisions a secret named `metrics-client-certs` which contains the TLS certificate and key (respectively under `tls.crt` and `tls.key` keys in the secret). CMO also rotates the certificate before it gets expired.{{% /alert %}}
 
 There are several options available depending on which framework your component is built.
 
@@ -91,7 +91,7 @@ Here is an example of a container's definition to be added to the Pod's template
         name: metrics-client-ca
 ```
 
-> Note: The `metrics-client-ca` ConfigMap needs to be created by your component and synced from the `kube-system/extension-apiserver-authentication` ConfigMap.
+{{% alert color="info"%}}The `metrics-client-ca` ConfigMap needs to be created by your component and synced from the `kube-system/extension-apiserver-authentication` ConfigMap.{{% /alert %}}
 
 Here is a Secret containing the kube-rbac-proxy's configuration (it allows only HTTPS requets to the `/metrics` endpoint for the Prometheus service account):
 
@@ -125,7 +125,7 @@ As an example, you can refer to the [Observability Operator](https://github.com/
 
 ### Roll your own HTTPS server
 
-> You don't use `library-go`, `controller-runtime` >= v0.16.0 or don't want to run a `kube-rbac-proxy` sidecar.
+{{% alert color="info" %}}You don't use `library-go`, `controller-runtime` >= v0.16.0 or don't want to run a `kube-rbac-proxy` sidecar.{{% /alert %}}
 
 In such situations, you need to implement your own HTTPS server for `/metrics`. As explained before, it needs to require and verify the TLS client certificate using the root CA stored under the `client-ca-file` key of the `kube-system/extension-apiserver-authentication` ConfigMap.
 
