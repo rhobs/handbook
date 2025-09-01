@@ -110,6 +110,8 @@ spec:
 
 Your `PrometheusRule` object(s) should be created by your operator with your `ServiceMonitor` and/or `PodMonitor` objects.
 
+Recording rule names should follow the [`level:metric:operations` pattern](https://prometheus.io/docs/practices/rules/).
+
 ### Modify the Telemeter client's configuration
 
 1. Clone the [cluster-monitoring-operator](https://github.com/openshift/cluster-monitoring-operator) repository locally.
