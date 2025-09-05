@@ -108,9 +108,9 @@ spec:
       record: openshift:prometheus_tsdb_head_series:sum
 ```
 
-Your `PrometheusRule` object(s) should be created by your operator with your `ServiceMonitor` and/or `PodMonitor` objects.
+Your `PrometheusRule` object(s) should be managed by your operator with your `ServiceMonitor` and/or `PodMonitor` objects. It is ok to add the recording rule(s) to an existing `PrometheusRuler` resource (already managed by your operator). When creating recording rules only used for Telemetry, we recommend using a dedicated group (`telemetry.rules` for instance).
 
-Recording rule names should follow the [`level:metric:operations` pattern](https://prometheus.io/docs/practices/rules/).
+Recording rule names should follow the [`level:metric:operations` pattern](https://prometheus.io/docs/practices/rules/). When counting (resp. summing) items, prefer the `:count` (resp. `:sum`) suffix over the `:total` suffix (the latter is used to signal an accumulating counter, for example a always-increasing count of requests).
 
 ### Modify the Telemeter client's configuration
 
