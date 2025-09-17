@@ -141,19 +141,7 @@ make --always-make docs
 
 ### Synchronize the Telemeter server's configuration
 
-Once the pull request in the cluster-monitoring-operator repository is merged, the configuration of the Telemetry server needs to be synchronized.
-
-1. Clone the [rhobs/configuration](https://github.com/rhobs/configuration) repository.
-
-2. Run
-
-```bash
-make whitelisted_metrics && make
-```
-
-3. Commit the changes into Git and open a pull request in the rhobs/configuration repository.
-
-4. Ask for a review on the `#forum-observatorium` Slack channel.
+Once the pull request in the cluster-monitoring-operator repository is merged, the configuration of the Telemetry server needs to be synchronized. You can ask the Telemetry server owners to update their metrics allow-list on the `#forum-observatorium` Slack channel.
 
 Once merged, the updated configuration should be rolled out to the production Telemetry within a few days. After this happens, clusters running the next (e.g. `master`) OCP version should start sending the new metric(s) to Telemetry.
 
