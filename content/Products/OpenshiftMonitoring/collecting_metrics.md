@@ -17,7 +17,7 @@ To avoid leaking sensitive information to potential attackers, all OpenShift com
 * Implement proper authentication (e.g. verify the identity of the requester).
 * Implement proper authorization (e.g. authorize requests issued by the Prometheus service account or users with GET permission on the metrics endpoint).
 
-As described in the [Client certificate scraping](https://github.com/openshift/enhancements/blob/master/enhancements/monitoring/client-cert-scraping.md) enhancement proposal, we recommend that the components rely on client TLS certificates for authentication/authorization. This is more efficient and robust than using bearer tokens because token-based authn/authz add a dependency (and additional load) on the Kubernetes API.
+All the requirements are well defined in the [OpenShift developer documentation](https://github.com/openshift/enhancements/blob/master/CONVENTIONS.md#metrics). As described in the [Client certificate scraping](https://github.com/openshift/enhancements/blob/master/enhancements/monitoring/client-cert-scraping.md) enhancement proposal, we recommend that the components rely on client TLS certificates for authentication/authorization. This is more efficient and robust than using bearer tokens because token-based authn/authz add a dependency (and additional load) on the Kubernetes API.
 
 To this goal, the Cluster monitoring operator provisions a TLS client certificate for the in-cluster Prometheus. The client certificate is issued for the `system:serviceaccount:openshift-monitoring:prometheus-k8s` Common Name (CN) and signed by the `kubernetes.io/kube-apiserver-client` [signer](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#kubernetes-signers). The certificate can be verified using the certificate authority (CA) bundle located at the `client-ca-file` key of the `kube-system/extension-apiserver-authentication` ConfigMap.
 
@@ -27,7 +27,7 @@ There are several options available depending on which framework your component 
 
 ### library-go
 
-If your component already relies on `*ControllerCommandConfig` from `github.com/openshift/library-go/pkg/controller/controllercmd`, it should automatically expose a TLS-secured `/metrics` endpoint which has an hardcoded authorizer for the `system:serviceaccount:openshift-monitoring:prometheus-k8s` service account ([link](https://github.com/openshift/library-go/blob/24668b1349e6276ebfa9f9e49c780559284defed/pkg/controller/controllercmd/builder.go#L277-L279)).
+If your component already relies on `*ControllerCommandConfig` from `github.com/openshift/library-go/pkg/controller/controllercmd`, it should automatically expose a TLS-secured `/metrics` endpoint which has an hardcoded authorizer for the `system:serviceaccount:openshift-monitoring:prometheus-k8s` service account (refer to [github.com/openshift/library-go/pkg/authorization/hardcodedauthorizer](https://pkg.go.dev/github.com/openshift/library-go/pkg/authorization/hardcodedauthorizer) package and [usage](https://github.com/openshift/library-go/blob/24668b1349e6276ebfa9f9e49c780559284defed/pkg/controller/controllercmd/builder.go#L277-L279)). Requests authenticating with bearer tokens are allowed if the authenticated user has the `get` verb permission on the `/metrics` (non-resource) URL.
 
 Example: the [Cluster Kubernetes API Server Operator](https://github.com/openshift/cluster-kube-apiserver-operator/).
 
@@ -35,12 +35,12 @@ Example: the [Cluster Kubernetes API Server Operator](https://github.com/openshi
 
 The "simplest" option when the component doesn't rely on `github.com/openshift/library-go` (and switching to library-go isn't an option) is to run a [`kube-rbac-proxy`](https://github.com/openshift/kube-rbac-proxy) sidecar in the same pod as the application being monitored.
 
-Here is an example of a container's definition to be added to the Pod's template of the Deployment (or Daemonset):
+Here is an example of a sidecar container's definition to be added to the Pod's template of the Deployment (or Daemonset):
 
 ```yaml
   - args:
     - --secure-listen-address=0.0.0.0:8443
-    - --upstream=http://127.0.0.1:8081
+    - --upstream=http://127.0.0.1:8081 # make sure that the upstream container listens on 127.0.0.1.
     - --config-file=/etc/kube-rbac-proxy/config.yaml
     - --tls-cert-file=/etc/tls/private/tls.crt
     - --tls-private-key-file=/etc/tls/private/tls.key
