@@ -148,7 +148,7 @@ The workflow is:
     * There's no automatic way to enforce the label (yet).
     * The OCP console will display a checkbox at installation time to enable cluster monitoring for the operator if you add the `operatorframework.io/cluster-monitoring=true` annotation to the operator's CSV and if the installation namespace starts with `openshift-`.
     * For CLI installations, the requirement should be detailed in the installation procedure ([example](https://docs.redhat.com/en/documentation/openshift_container_platform/4.16/html/logging/cluster-logging-deploying#logging-loki-cli-install_cluster-logging-deploying) for the Logging operator).
-* Add Role and RoleBinding to give the prometheus-k8s service account access to pods, endpoints and services in your namespace.
+* Add Role and RoleBinding to give the prometheus-k8s service account access to pods, endpoints, endpointslices and services in your namespace.
 * In case of ServiceMonitor:
   * Create a Service object selecting the scraped pods.
   * Create a ServiceMonitor object targeting the Service.
@@ -171,6 +171,7 @@ rules:
   resources:
   - services
   - endpoints
+  - endpointslices
   - pods
   verbs:
   - get
