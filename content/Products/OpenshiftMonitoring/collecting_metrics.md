@@ -171,8 +171,15 @@ rules:
   resources:
   - services
   - endpoints
-  - endpointslices
   - pods
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
   verbs:
   - get
   - list
@@ -248,6 +255,7 @@ spec:
     # Select all Services in the same namespace that have the `app.kubernetes.io/name: my-app` label.
     matchLabels:
       app.kubernetes.io/name: my-app
+  serviceDiscoveryRole: EndpointSlice
 ```
 
 ## Next steps
