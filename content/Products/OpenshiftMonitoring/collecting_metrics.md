@@ -171,12 +171,19 @@ rules:
   resources:
   - services
   - endpoints
-  - endpointslices
   - pods
   verbs:
   - get
   - list
   - watch
+- apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - list
+  - watchg
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
