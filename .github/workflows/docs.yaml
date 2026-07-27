@@ -13,7 +13,7 @@ jobs:
     name: Docs formatting and link checking.
     steps:
       - name: Checkout code into the Go module directory.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Install Go
         uses: actions/setup-go@v7
