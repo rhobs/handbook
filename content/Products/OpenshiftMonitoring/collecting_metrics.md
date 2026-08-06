@@ -255,6 +255,7 @@ spec:
     # Select all Services in the same namespace that have the `app.kubernetes.io/name: my-app` label.
     matchLabels:
       app.kubernetes.io/name: my-app
+  serviceDiscoveryRole: EndpointSlice
 ```
 
 ## Next steps
